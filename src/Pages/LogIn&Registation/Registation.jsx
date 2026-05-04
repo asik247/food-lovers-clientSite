@@ -4,6 +4,7 @@ const Registation = () => {
     return (
         <div>
             <p>Registaion pages</p>
+            <p>Registaion pages</p>
         </div>
     );
 };
