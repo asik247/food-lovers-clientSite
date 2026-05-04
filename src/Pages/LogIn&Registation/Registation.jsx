@@ -10,3 +10,4 @@ const Registation = () => {
 };
 
 export default Registation;
+export default Registation;
