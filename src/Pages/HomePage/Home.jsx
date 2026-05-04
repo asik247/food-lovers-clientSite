@@ -1,5 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { use, useEffect } from 'react';
+import { AuthContext } from '../../Context/AuthProvider';
 const Home = () => {
+    const userInfo = use(AuthContext)
+    console.log(userInfo);
     useEffect(() => {
         fetch('http://localhost:3000/products')
             .then(res => res.json())
