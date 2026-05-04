@@ -5,6 +5,8 @@ import About from "../Pages/AboutPage/About";
 import Product from "../Pages/AllProduct/Product";
 import LogIn from "../Pages/LogIn&Registation/LogIn";
 import Bids from "../Pages/MyBids/Bids";
+import AuthLayout from "../Layouts/AuthLayout";
+import Registation from "../Pages/LogIn&Registation/Registation";
 
 const router = createBrowserRouter([
     {
@@ -36,5 +38,14 @@ const router = createBrowserRouter([
 
         ]
     }
+,
+{
+    path:'auth',
+    element:<AuthLayout></AuthLayout>,
+    children:[
+        {index:true,element:<LogIn></LogIn>},
+        {path:'registation',element:<Registation></Registation>}
+    ]
+}
 ])
 export default router
