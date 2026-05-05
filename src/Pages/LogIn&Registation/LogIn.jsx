@@ -2,29 +2,38 @@ import React, { useRef, useState } from 'react';
 import { Link } from 'react-router';
 import useForm from '../../Hooks/useForm';
 import useAuth from '../../Hooks/useAuth';
+import { sendPasswordResetEmail } from 'firebase/auth';
+import { auth } from '../../Firebase/firebase.init';
 
 const LogIn = () => {
     const [showPassword, setShowPassword] = useState(false);
-    const {logInUsers} = useAuth()
+    const { logInUsers } = useAuth()
     //!useForm hook get info;
-     const [emailValue, handleEmailChange] = useForm('')
+    const [emailValue, handleEmailChange] = useForm('')
     const [passwordValue, handlePasswordChange] = useForm('')
     // //?Remember me terms code;
     // const handleRememberMe = useRef();
     //?handleLoginSubmit;
-    const handleLoginUser = (e)=>{
+    const handleLoginUser = (e) => {
         e.preventDefault();
         // //!Remember me terms and validation;
         // const rememberTerms = handleRememberMe.current.checked;
         // if(!rememberTerms){
         //    return alert('You must remember me!')
         // }
-        logInUsers(emailValue,passwordValue)
-        .then((res)=>{
-            console.log('login Successfully',res.user);
-        }).catch(err=>{
-            console.log(err.message);
-        })
+        logInUsers(emailValue, passwordValue)
+            .then((res) => {
+                console.log('login Successfully', res.user);
+            }).catch(err => {
+                console.log(err.message);
+            })
+    }
+    const handlePasswordUpdate = () => {
+        console.log('handlePasswordUpdate clicked');
+        sendPasswordResetEmail(auth, emailValue)
+            .then(() => {
+                alert('Please check your email');
+            })
     }
 
     return (
@@ -90,11 +99,11 @@ const LogIn = () => {
                     <div className="flex items-center justify-between text-sm">
 
                         <label className="flex items-center gap-2 text-gray-600">
-                            <input type="checkbox"  className="checkbox checkbox-warning checkbox-sm" />
+                            <input type="checkbox" className="checkbox checkbox-warning checkbox-sm" />
                             Remember me
                         </label>
 
-                        <p className="text-orange-500 hover:underline cursor-pointer font-semibold">
+                        <p onClick={handlePasswordUpdate} className="text-orange-500 hover:underline cursor-pointer font-semibold">
                             Forgot Password?
                         </p>
                     </div>
@@ -125,7 +134,7 @@ const LogIn = () => {
                 {/* Register Link */}
                 <p className="text-center text-gray-600 mt-6">
                     Don’t have an account?
-                   <Link to={'/auth/registation'}> <span className="text-orange-500 font-bold ml-2 cursor-pointer hover:underline">
+                    <Link to={'/auth/registation'}> <span className="text-orange-500 font-bold ml-2 cursor-pointer hover:underline">
                         Register
                     </span></Link>
                 </p>
