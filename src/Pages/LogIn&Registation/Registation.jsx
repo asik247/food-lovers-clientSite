@@ -2,33 +2,49 @@ import React, { useRef, useState } from 'react';
 import { Link } from 'react-router';
 import useAuth from '../../Hooks/useAuth';
 import useForm from '../../Hooks/useForm';
+import { sendEmailVerification, updateProfile } from 'firebase/auth';
+import { auth } from '../../Firebase/firebase.init';
 
 const Registation = () => {
-    const [showPassword,setShowPassword] = useState(false)
-    const {registerUsers} = useAuth()
-    const [nameValue,handleNameChange] = useForm('')
-    const [photoValue,handlePhotoChange] = useForm('')
-     const [emailValue,handleEmailChange] = useForm('')
-    const [passwordValue,handlePasswordChange] = useForm('')
-    const [confarmPasswordValue,handleConfarmPasswordChange] = useForm('')
+    //!custom hook useAuth get registation;
+    const { registerUsers } = useAuth()
+    //?useForm get code;
+    const [showPassword, setShowPassword] = useState(false)
+    const [nameValue, handleNameChange] = useForm('')
+    const [photoValue, handlePhotoChange] = useForm('')
+    const [emailValue, handleEmailChange] = useForm('')
+    const [passwordValue, handlePasswordChange] = useForm('')
+    const [confarmPasswordValue, handleConfarmPasswordChange] = useForm('')
+    //?useRef usign for terms fields;
     const handleTerms = useRef();
-    
-
-    
-    const handleRegisterSubmit = (e)=>{
+    //!handleRegistation submit form;
+    const handleRegisterSubmit = (e) => {
         e.preventDefault();
-        console.log('clicked',nameValue,photoValue,emailValue,passwordValue,confarmPasswordValue);
-        const value = handleTerms.current.checked
-        console.log(value);
+        //?Terms value and validation;
+        const termsvalue = handleTerms.current.checked
+        if (!termsvalue) {
+            return alert('please accept terms & condition')
+        }
         //! RegisterUser code;
-        registerUsers(emailValue,passwordValue)
-        .then(res=>{
-            console.log(res.user);
-        }).catch(err=>{
-            console.log(err.message);
-        })
+        //?update profile code;
+        const newUser = {
+            displayName: nameValue,
+            photoURL: photoValue
+        }
+        registerUsers(emailValue, passwordValue)
+            .then(res => {
+                console.log(res.user);
+                //! update profile form filrebase auth;
+                updateProfile(res.user, newUser)
+                //Todo: Email-verification;
+                sendEmailVerification(res.user)
+                    .then(() => {
+                        alert('Please check your email');
+                    })
+            }).catch(err => {
+                console.log(err.message);
+            })
     }
-
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-100 via-amber-50 to-yellow-100 px-4 py-10">
 
@@ -66,7 +82,7 @@ const Registation = () => {
                         <label className="block mb-2 font-semibold text-gray-700">
                             Photo URL
                         </label>
-                        <input value={photoValue} onChange={handlePhotoChange}  className="w-full px-4 py-3 rounded-xl border border-orange-200 focus:outline-none focus:ring-2 focus:ring-orange-400" type="text" name="" id="" placeholder='Enter PhotoURL'/>
+                        <input value={photoValue} onChange={handlePhotoChange} className="w-full px-4 py-3 rounded-xl border border-orange-200 focus:outline-none focus:ring-2 focus:ring-orange-400" type="text" name="" id="" placeholder='Enter PhotoURL' />
                     </div>
 
                     {/* Email */}
@@ -91,19 +107,19 @@ const Registation = () => {
 
                         <div className="relative">
                             <input
-                                type={showPassword ? 'text':'password'}
+                                type={showPassword ? 'text' : 'password'}
                                 value={passwordValue}
                                 onChange={handlePasswordChange}
                                 placeholder="Enter password"
                                 className="w-full px-4 py-3 rounded-xl border border-orange-200 focus:outline-none focus:ring-2 focus:ring-orange-400"
                             />
 
-                            <button onClick={()=>setShowPassword(!showPassword)}
+                            <button onClick={() => setShowPassword(!showPassword)}
                                 type="button"
                                 className="absolute right-3 top-3 text-sm text-orange-500 font-semibold"
                             >
-                                
-                                {showPassword ? "Hide" :"Show"}
+
+                                {showPassword ? "Hide" : "Show"}
                             </button>
                         </div>
                     </div>
@@ -124,7 +140,7 @@ const Registation = () => {
 
                     {/* Terms */}
                     <div className="flex items-center gap-2">
-                        <input type="checkbox" ref={handleTerms}  className="checkbox checkbox-warning" />
+                        <input type="checkbox" ref={handleTerms} className="checkbox checkbox-warning" />
                         <p className="text-sm text-gray-600">
                             I agree to the Terms & Conditions
                         </p>

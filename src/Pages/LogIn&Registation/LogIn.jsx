@@ -1,9 +1,25 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router';
+import useForm from '../../Hooks/useForm';
+import useAuth from '../../Hooks/useAuth';
 
 const LogIn = () => {
-
     const [showPassword, setShowPassword] = useState(false);
+    const {logInUsers} = useAuth()
+    //!useForm hook get info;
+     const [emailValue, handleEmailChange] = useForm('')
+    const [passwordValue, handlePasswordChange] = useForm('')
+    //?handleLoginSubmit;
+    const handleLoginUser = (e)=>{
+        e.preventDefault();
+        console.log('login clicked',emailValue,passwordValue);
+        logInUsers(emailValue,passwordValue)
+        .then((res)=>{
+            console.log('login Successfully',res.user);
+        }).catch(err=>{
+            console.log(err.message);
+        })
+    }
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-100 via-amber-50 to-yellow-100 px-4 py-10">
@@ -22,7 +38,7 @@ const LogIn = () => {
                 </div>
 
                 {/* Form */}
-                <form className="space-y-5">
+                <form onSubmit={handleLoginUser} className="space-y-5">
 
                     {/* Email */}
                     <div>
@@ -32,6 +48,8 @@ const LogIn = () => {
 
                         <input
                             type="email"
+                            value={emailValue}
+                            onChange={handleEmailChange}
                             placeholder="Enter your email"
                             className="w-full px-4 py-3 rounded-xl border border-orange-200 focus:outline-none focus:ring-2 focus:ring-orange-400"
                         />
@@ -46,6 +64,8 @@ const LogIn = () => {
                         <div className="relative">
                             <input
                                 type={showPassword ? 'text' : 'password'}
+                                value={passwordValue}
+                                onChange={handlePasswordChange}
                                 placeholder="Enter your password"
                                 className="w-full px-4 py-3 rounded-xl border border-orange-200 focus:outline-none focus:ring-2 focus:ring-orange-400"
                             />
