@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Link } from 'react-router';
 import useForm from '../../Hooks/useForm';
 import useAuth from '../../Hooks/useAuth';
@@ -9,10 +9,16 @@ const LogIn = () => {
     //!useForm hook get info;
      const [emailValue, handleEmailChange] = useForm('')
     const [passwordValue, handlePasswordChange] = useForm('')
+    // //?Remember me terms code;
+    // const handleRememberMe = useRef();
     //?handleLoginSubmit;
     const handleLoginUser = (e)=>{
         e.preventDefault();
-        console.log('login clicked',emailValue,passwordValue);
+        // //!Remember me terms and validation;
+        // const rememberTerms = handleRememberMe.current.checked;
+        // if(!rememberTerms){
+        //    return alert('You must remember me!')
+        // }
         logInUsers(emailValue,passwordValue)
         .then((res)=>{
             console.log('login Successfully',res.user);
@@ -84,7 +90,7 @@ const LogIn = () => {
                     <div className="flex items-center justify-between text-sm">
 
                         <label className="flex items-center gap-2 text-gray-600">
-                            <input type="checkbox" className="checkbox checkbox-warning checkbox-sm" />
+                            <input type="checkbox"  className="checkbox checkbox-warning checkbox-sm" />
                             Remember me
                         </label>
 
