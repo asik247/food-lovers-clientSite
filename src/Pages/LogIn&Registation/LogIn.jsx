@@ -7,7 +7,7 @@ import { auth } from '../../Firebase/firebase.init';
 
 const LogIn = () => {
     const [showPassword, setShowPassword] = useState(false);
-    const { logInUsers } = useAuth()
+    const { logInUsers,googleLogin} = useAuth()
     //!useForm hook get info;
     const [emailValue, handleEmailChange] = useForm('')
     const [passwordValue, handlePasswordChange] = useForm('')
@@ -34,6 +34,16 @@ const LogIn = () => {
             .then(() => {
                 alert('Please check your email');
             })
+    }
+    //Todo:Google Login code;
+    const handeGoogleLogin = ()=>{
+        googleLogin()
+        .then(res=>{
+            console.log(res.user);
+        })
+        .catch(err=>{
+            console.log(err.message);
+        })
     }
 
     return (
@@ -117,7 +127,7 @@ const LogIn = () => {
                     </button>
 
                     {/* Google Button */}
-                    <button
+                    <button onClick={handeGoogleLogin}
                         type="button"
                         className="w-full border border-orange-200 hover:bg-orange-50 duration-300 py-3 rounded-xl font-semibold flex items-center justify-center gap-3"
                     >

@@ -1,18 +1,27 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import React, { createContext } from 'react';
 import { auth } from '../Firebase/firebase.init';
 export const AuthContext = createContext(null);
+import { GoogleAuthProvider } from "firebase/auth";
 const AuthProvider = ({ children }) => {
+    const provider = new GoogleAuthProvider();
     //!create accoutn/Registation code;
-    const registerUsers = (email,password) =>{
-        return createUserWithEmailAndPassword(auth,email,password)
+    const registerUsers = (email, password) => {
+        return createUserWithEmailAndPassword(auth, email, password)
     }
-    const logInUsers = (email,password) =>{
-        return signInWithEmailAndPassword(auth,email,password)
+    //Todo:Login with email and passwrod;
+    const logInUsers = (email, password) => {
+        return signInWithEmailAndPassword(auth, email, password)
+    }
+    //!Google login code;
+
+    const googleLogin = () => {
+       return signInWithPopup(auth,provider)
     }
     const usersInfo = {
-       registerUsers,
-       logInUsers
+        registerUsers,
+        logInUsers,
+        googleLogin
     }
     return (
 
