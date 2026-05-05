@@ -20,6 +20,13 @@ const Registation = () => {
         console.log('clicked',nameValue,photoValue,emailValue,passwordValue,confarmPasswordValue);
         const value = handleTerms.current.checked
         console.log(value);
+        //! RegisterUser code;
+        registerUsers(emailValue,passwordValue)
+        .then(res=>{
+            console.log(res.user);
+        }).catch(err=>{
+            console.log(err.message);
+        })
     }
 
     return (
