@@ -1,8 +1,16 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router';
+import useAuth from '../../Hooks/useAuth';
+import useForm from '../../Hooks/useForm';
 
 const Registation = () => {
     const [showPassword, setShowPassword] = useState(false);
+    const {registerUsers} = useAuth()
+    const [nameValue,handleNameChange] = useForm('')
+    const handleRegisterSubmit = (e)=>{
+        e.preventDefault();
+        console.log('clicked',nameValue);
+    }
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-100 via-amber-50 to-yellow-100 px-4 py-10">
@@ -20,7 +28,7 @@ const Registation = () => {
                 </div>
 
                 {/* Form */}
-                <form className="space-y-5">
+                <form onSubmit={handleRegisterSubmit} className="space-y-5">
 
                     {/* Name */}
                     <div>
@@ -29,6 +37,8 @@ const Registation = () => {
                         </label>
                         <input
                             type="text"
+                            value={nameValue}
+                            onChange={handleNameChange}
                             placeholder="Enter your full name"
                             className="w-full px-4 py-3 rounded-xl border border-orange-200 focus:outline-none focus:ring-2 focus:ring-orange-400"
                         />
