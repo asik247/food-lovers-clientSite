@@ -1,15 +1,25 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Link } from 'react-router';
 import useAuth from '../../Hooks/useAuth';
 import useForm from '../../Hooks/useForm';
 
 const Registation = () => {
-    const [showPassword, setShowPassword] = useState(false);
+    const [showPassword,setShowPassword] = useState(false)
     const {registerUsers} = useAuth()
     const [nameValue,handleNameChange] = useForm('')
+    const [photoValue,handlePhotoChange] = useForm('')
+     const [emailValue,handleEmailChange] = useForm('')
+    const [passwordValue,handlePasswordChange] = useForm('')
+    const [confarmPasswordValue,handleConfarmPasswordChange] = useForm('')
+    const handleTerms = useRef();
+    
+
+    
     const handleRegisterSubmit = (e)=>{
         e.preventDefault();
-        console.log('clicked',nameValue);
+        console.log('clicked',nameValue,photoValue,emailValue,passwordValue,confarmPasswordValue);
+        const value = handleTerms.current.checked
+        console.log(value);
     }
 
     return (
@@ -49,11 +59,7 @@ const Registation = () => {
                         <label className="block mb-2 font-semibold text-gray-700">
                             Photo URL
                         </label>
-                        <input
-                            type="text"
-                            placeholder="Enter photo URL"
-                            className="w-full px-4 py-3 rounded-xl border border-orange-200 focus:outline-none focus:ring-2 focus:ring-orange-400"
-                        />
+                        <input value={photoValue} onChange={handlePhotoChange}  className="w-full px-4 py-3 rounded-xl border border-orange-200 focus:outline-none focus:ring-2 focus:ring-orange-400" type="text" name="" id="" placeholder='Enter PhotoURL'/>
                     </div>
 
                     {/* Email */}
@@ -63,6 +69,8 @@ const Registation = () => {
                         </label>
                         <input
                             type="email"
+                            value={emailValue}
+                            onChange={handleEmailChange}
                             placeholder="Enter your email"
                             className="w-full px-4 py-3 rounded-xl border border-orange-200 focus:outline-none focus:ring-2 focus:ring-orange-400"
                         />
@@ -76,17 +84,19 @@ const Registation = () => {
 
                         <div className="relative">
                             <input
-                                type={showPassword ? "text" : "password"}
+                                type={showPassword ? 'text':'password'}
+                                value={passwordValue}
+                                onChange={handlePasswordChange}
                                 placeholder="Enter password"
                                 className="w-full px-4 py-3 rounded-xl border border-orange-200 focus:outline-none focus:ring-2 focus:ring-orange-400"
                             />
 
-                            <button
+                            <button onClick={()=>setShowPassword(!showPassword)}
                                 type="button"
-                                onClick={() => setShowPassword(!showPassword)}
                                 className="absolute right-3 top-3 text-sm text-orange-500 font-semibold"
                             >
-                                {showPassword ? "Hide" : "Show"}
+                                
+                                {showPassword ? "Hide" :"Show"}
                             </button>
                         </div>
                     </div>
@@ -98,6 +108,8 @@ const Registation = () => {
                         </label>
                         <input
                             type="password"
+                            value={confarmPasswordValue}
+                            onChange={handleConfarmPasswordChange}
                             placeholder="Confirm your password"
                             className="w-full px-4 py-3 rounded-xl border border-orange-200 focus:outline-none focus:ring-2 focus:ring-orange-400"
                         />
@@ -105,7 +117,7 @@ const Registation = () => {
 
                     {/* Terms */}
                     <div className="flex items-center gap-2">
-                        <input type="checkbox" className="checkbox checkbox-warning" />
+                        <input type="checkbox" ref={handleTerms}  className="checkbox checkbox-warning" />
                         <p className="text-sm text-gray-600">
                             I agree to the Terms & Conditions
                         </p>
