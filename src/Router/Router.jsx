@@ -7,6 +7,8 @@ import LogIn from "../Pages/LogIn&Registation/LogIn";
 import Bids from "../Pages/MyBids/Bids";
 import AuthLayout from "../Layouts/AuthLayout";
 import Registation from "../Pages/LogIn&Registation/Registation";
+import PrivateRoutes from "./PrivateRoutes";
+import DashBoard from "../Pages/DashBoard/DashBoard";
 
 const router = createBrowserRouter([
     {
@@ -24,7 +26,7 @@ const router = createBrowserRouter([
 
             {
                 path: 'products',
-                Component: Product
+                element:<PrivateRoutes><Product></Product></PrivateRoutes>
             },
 
             {
@@ -33,7 +35,11 @@ const router = createBrowserRouter([
             },
             {
                 path: 'bids',
-                Component: Bids
+               element:<PrivateRoutes><Bids></Bids></PrivateRoutes>
+            },
+            {
+                path: 'dashboard',
+               element:<PrivateRoutes><DashBoard></DashBoard></PrivateRoutes>
             },
 
         ]

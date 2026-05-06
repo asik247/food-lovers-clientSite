@@ -1,17 +1,29 @@
 import React from 'react';
-import { NavLink } from 'react-router';
+import { Link, NavLink } from 'react-router';
 import useAuth from '../../Hooks/useAuth';
 
 const Nav = () => {
-    const {user} = useAuth()
-    console.log('currentUser',user);
+    const { user, logOut } = useAuth()
+    console.log('currentUser', user);
     const links = <>
         <li><NavLink to={'/'}>Home</NavLink></li>
         <li><NavLink to={'/about'}>About</NavLink></li>
-        <li><NavLink to={'/products'}>Products</NavLink></li>
         <li><NavLink to={'/auth'}>LogIn</NavLink></li>
-        <li><NavLink to={'/bids'}>Bids</NavLink></li>
+        <li><NavLink to={'/dashboard'}>DsahBoard</NavLink></li>
+        {user && <>
+            <li><NavLink to={'/products'}>Products</NavLink></li>
+            <li><NavLink to={'/bids'}>Bids</NavLink></li>
+        </>}
+
     </>
+    const handleLogOut = () => {
+        logOut()
+            .then(() => {
+                alert('logOut successfully!')
+            }).catch(err => {
+                console.log(err);
+            })
+    }
     return (
         <div>
             <div className="navbar bg-base-100 shadow-sm">
@@ -34,7 +46,15 @@ const Nav = () => {
                     </ul>
                 </div>
                 <div className="navbar-end">
-                    <a className="btn">Button</a>
+
+                    <div className="navbar-end">
+                        {
+                            user
+                                ? <button onClick={handleLogOut} className="btn">LogOut</button>
+                                : <Link to="/auth" className="btn">LogIn</Link>
+                        }
+                    </div>
+
                 </div>
             </div>
         </div>

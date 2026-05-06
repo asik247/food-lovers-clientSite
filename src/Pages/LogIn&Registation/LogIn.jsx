@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Link } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 import useForm from '../../Hooks/useForm';
 import useAuth from '../../Hooks/useAuth';
 import { sendPasswordResetEmail } from 'firebase/auth';
@@ -13,6 +13,8 @@ const LogIn = () => {
     const [passwordValue, handlePasswordChange] = useForm('')
     // //?Remember me terms code;
     // const handleRememberMe = useRef();
+    const location = useLocation();
+    const navegate = useNavigate();
     //?handleLoginSubmit;
     const handleLoginUser = (e) => {
         e.preventDefault();
@@ -24,6 +26,7 @@ const LogIn = () => {
         logInUsers(emailValue, passwordValue)
             .then((res) => {
                 console.log('login Successfully', res.user);
+                navegate(location?.state || '/')
             }).catch(err => {
                 console.log(err.message);
             })
@@ -40,6 +43,7 @@ const LogIn = () => {
         googleLogin()
         .then(res=>{
             console.log(res.user);
+            navegate(location?.state || '/')
         })
         .catch(err=>{
             console.log(err.message);
