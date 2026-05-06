@@ -1,29 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router';
 import useAuth from '../../Hooks/useAuth';
 
 const Nav = () => {
     const { user, logOut } = useAuth()
     console.log('currentUser', user);
+    const [open, setOpen] = useState(false)
     const links = <>
         <li><NavLink to={'/'}>Home</NavLink></li>
-        <li><NavLink to={'/about'}>About</NavLink></li>
-        <li><NavLink to={'/auth'}>LogIn</NavLink></li>
         <li><NavLink to={'/dashboard'}>DsahBoard</NavLink></li>
-        {user && <>
-            <li><NavLink to={'/products'}>Products</NavLink></li>
-            <li><NavLink to={'/bids'}>Bids</NavLink></li>
-        </>}
-
+        <li><NavLink to={'/auth'}>LogIn</NavLink></li>
     </>
-    const handleLogOut = () => {
+    const handleLogOut = ()=>{
         logOut()
-            .then(() => {
-                alert('logOut successfully!')
-            }).catch(err => {
-                console.log(err);
-            })
+        .then(()=>{
+            console.log("logOut done");
+        }).catch(err=>{
+            console.log(err);
+        })
     }
+
     return (
         <div>
             <div className="navbar bg-base-100 shadow-sm">
@@ -50,8 +46,24 @@ const Nav = () => {
                     <div className="navbar-end">
                         {
                             user
-                                ? <button onClick={handleLogOut} className="btn">LogOut</button>
+                                ?
+                                <img
+
+                                    onClick={() => setOpen(!open)}
+                                    src={user?.photoURL}
+                                    alt="user"
+                                    className="w-12 h-12 rounded-full cursor-pointer"
+                                />
                                 : <Link to="/auth" className="btn">LogIn</Link>
+                        }
+                    </div>
+                    <div>
+                        {
+                            open && <> <li><NavLink to={'/addReview'}>Add Review</NavLink></li>
+                                <li><NavLink to={'/myReviews'}>My Reviews</NavLink></li>
+                                <button onClick={handleLogOut}>Logout</button>
+                                
+                                </>
                         }
                     </div>
 
