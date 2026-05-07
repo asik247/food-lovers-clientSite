@@ -6,163 +6,237 @@ import { sendEmailVerification, updateProfile } from 'firebase/auth';
 import { auth } from '../../Firebase/firebase.init';
 
 const Registation = () => {
-    //!custom hook useAuth get registation;
-    const { registerUsers } = useAuth()
-    //?useForm get code;
-    const [showPassword, setShowPassword] = useState(false)
-    const [nameValue, handleNameChange] = useForm('')
-    const [photoValue, handlePhotoChange] = useForm('')
-    const [emailValue, handleEmailChange] = useForm('')
-    const [passwordValue, handlePasswordChange] = useForm('')
-    const [confarmPasswordValue, handleConfarmPasswordChange] = useForm('')
-    //?useRef usign for terms fields;
+
+    // auth
+    const { registerUsers } = useAuth();
+
+    // state
+    const [showPassword, setShowPassword] = useState(false);
+
+    // custom hooks
+    const [nameValue, handleNameChange] = useForm('');
+    const [photoValue, handlePhotoChange] = useForm('');
+    const [emailValue, handleEmailChange] = useForm('');
+    const [passwordValue, handlePasswordChange] = useForm('');
+    const [confarmPasswordValue, handleConfarmPasswordChange] = useForm('');
+
+    // terms
     const handleTerms = useRef();
-    //!handleRegistation submit form;
+
+    // register submit
     const handleRegisterSubmit = (e) => {
+
         e.preventDefault();
-        //?Terms value and validation;
-        const termsvalue = handleTerms.current.checked
+
+        // terms validation
+        const termsvalue = handleTerms.current.checked;
+
         if (!termsvalue) {
-            return alert('please accept terms & condition')
+            return alert('Please accept Terms & Conditions');
         }
-        //! RegisterUser code;
-        //?update profile code;
+
+        // password validation
+        if (passwordValue !== confarmPasswordValue) {
+            return alert('Password does not match');
+        }
+
+        if (passwordValue.length < 6) {
+            return alert('Password must be at least 6 characters');
+        }
+
+        // user profile
         const newUser = {
             displayName: nameValue,
             photoURL: photoValue
-        }
+        };
+
+        // register user
         registerUsers(emailValue, passwordValue)
             .then(res => {
+
                 console.log(res.user);
-                //! update profile form filrebase auth;
+
+                // update profile
                 updateProfile(res.user, newUser)
-                //Todo: Email-verification;
+                    .then(() => {
+                        console.log('Profile Updated');
+                    });
+
+                // email verification
                 sendEmailVerification(res.user)
                     .then(() => {
                         alert('Please check your email');
-                    })
-            }).catch(err => {
-                console.log(err.message);
+                    });
+
             })
-    }
+            .catch(err => {
+                console.log(err.message);
+            });
+    };
+
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-100 via-amber-50 to-yellow-100 px-4 py-10">
 
-            <div className="w-full max-w-lg bg-white shadow-2xl rounded-3xl p-8 border border-orange-100">
+        <div className="min-h-screen flex items-center justify-center bg-[#0f172a] px-4 py-10">
 
-                {/* Heading */}
-                <div className="text-center mb-8">
-                    <h1 className="text-4xl font-extrabold text-orange-500">
+            <div className="w-full max-w-sm bg-[#111827] border border-gray-800 rounded-2xl shadow-2xl p-6">
+
+                {/* heading */}
+                <div className="text-center mb-6">
+
+                    <h1 className="text-3xl font-bold text-white">
                         Create Account
                     </h1>
-                    <p className="text-gray-500 mt-2">
-                        Register your account to continue
+
+                    <p className="text-gray-400 mt-2 text-sm">
+                        Register your account
                     </p>
+
                 </div>
 
-                {/* Form */}
-                <form onSubmit={handleRegisterSubmit} className="space-y-5">
+                {/* form */}
+                <form
+                    onSubmit={handleRegisterSubmit}
+                    className="space-y-4"
+                >
 
-                    {/* Name */}
+                    {/* full name */}
                     <div>
-                        <label className="block mb-2 font-semibold text-gray-700">
+
+                        <label className="text-sm text-gray-300 font-medium">
                             Full Name
                         </label>
+
                         <input
                             type="text"
                             value={nameValue}
                             onChange={handleNameChange}
                             placeholder="Enter your full name"
-                            className="w-full px-4 py-3 rounded-xl border border-orange-200 focus:outline-none focus:ring-2 focus:ring-orange-400"
+                            className="w-full mt-2 px-4 py-3 bg-[#1f2937] border border-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-orange-400 duration-300"
                         />
+
                     </div>
 
-                    {/* Photo URL */}
+                    {/* photo url */}
                     <div>
-                        <label className="block mb-2 font-semibold text-gray-700">
+
+                        <label className="text-sm text-gray-300 font-medium">
                             Photo URL
                         </label>
-                        <input value={photoValue} onChange={handlePhotoChange} className="w-full px-4 py-3 rounded-xl border border-orange-200 focus:outline-none focus:ring-2 focus:ring-orange-400" type="text" name="" id="" placeholder='Enter PhotoURL' />
+
+                        <input
+                            type="text"
+                            value={photoValue}
+                            onChange={handlePhotoChange}
+                            placeholder="Enter photo URL"
+                            className="w-full mt-2 px-4 py-3 bg-[#1f2937] border border-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-orange-400 duration-300"
+                        />
+
                     </div>
 
-                    {/* Email */}
+                    {/* email */}
                     <div>
-                        <label className="block mb-2 font-semibold text-gray-700">
-                            Email Address
+
+                        <label className="text-sm text-gray-300 font-medium">
+                            Email
                         </label>
+
                         <input
                             type="email"
                             value={emailValue}
                             onChange={handleEmailChange}
                             placeholder="Enter your email"
-                            className="w-full px-4 py-3 rounded-xl border border-orange-200 focus:outline-none focus:ring-2 focus:ring-orange-400"
+                            className="w-full mt-2 px-4 py-3 bg-[#1f2937] border border-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-orange-400 duration-300"
                         />
+
                     </div>
 
-                    {/* Password */}
+                    {/* password */}
                     <div>
-                        <label className="block mb-2 font-semibold text-gray-700">
+
+                        <label className="text-sm text-gray-300 font-medium">
                             Password
                         </label>
 
-                        <div className="relative">
+                        <div className="relative mt-2">
+
                             <input
                                 type={showPassword ? 'text' : 'password'}
                                 value={passwordValue}
                                 onChange={handlePasswordChange}
                                 placeholder="Enter password"
-                                className="w-full px-4 py-3 rounded-xl border border-orange-200 focus:outline-none focus:ring-2 focus:ring-orange-400"
+                                className="w-full px-4 py-3 bg-[#1f2937] border border-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-orange-400 duration-300"
                             />
 
-                            <button onClick={() => setShowPassword(!showPassword)}
+                            <button
+                                onClick={() => setShowPassword(!showPassword)}
                                 type="button"
-                                className="absolute right-3 top-3 text-sm text-orange-500 font-semibold"
+                                className="absolute right-4 top-3 text-sm text-orange-400 font-medium"
                             >
-
-                                {showPassword ? "Hide" : "Show"}
+                                {showPassword ? 'Hide' : 'Show'}
                             </button>
+
                         </div>
+
                     </div>
 
-                    {/* Confirm Password */}
+                    {/* confirm password */}
                     <div>
-                        <label className="block mb-2 font-semibold text-gray-700">
+
+                        <label className="text-sm text-gray-300 font-medium">
                             Confirm Password
                         </label>
+
                         <input
                             type="password"
                             value={confarmPasswordValue}
                             onChange={handleConfarmPasswordChange}
-                            placeholder="Confirm your password"
-                            className="w-full px-4 py-3 rounded-xl border border-orange-200 focus:outline-none focus:ring-2 focus:ring-orange-400"
+                            placeholder="Confirm password"
+                            className="w-full mt-2 px-4 py-3 bg-[#1f2937] border border-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-orange-400 duration-300"
                         />
+
                     </div>
 
-                    {/* Terms */}
-                    <div className="flex items-center gap-2">
-                        <input type="checkbox" ref={handleTerms} className="checkbox checkbox-warning" />
-                        <p className="text-sm text-gray-600">
-                            I agree to the Terms & Conditions
+                    {/* terms */}
+                    <div className="flex items-center gap-2 text-sm text-gray-400">
+
+                        <input
+                            type="checkbox"
+                            ref={handleTerms}
+                            className="checkbox checkbox-warning checkbox-sm"
+                        />
+
+                        <p>
+                            I agree to Terms & Conditions
                         </p>
+
                     </div>
 
-                    {/* Button */}
+                    {/* button */}
                     <button
                         type="submit"
-                        className="w-full bg-gradient-to-r from-orange-500 to-amber-400 hover:scale-[1.02] duration-300 text-white font-bold py-3 rounded-xl shadow-lg"
+                        className="w-full py-3 rounded-xl bg-gradient-to-r from-orange-500 to-amber-400 text-white font-bold hover:scale-[1.02] duration-300 shadow-lg"
                     >
-                        Register Now
+                        Register
                     </button>
+
                 </form>
 
-                {/* Login Link */}
-                <p className="text-center text-gray-600 mt-6">
+                {/* login */}
+                <p className="text-center text-gray-400 text-sm mt-6">
+
                     Already have an account?
-                    <Link to={'/auth'}>  <span className="text-orange-500 font-bold cursor-pointer ml-2 hover:underline">
+
+                    <Link
+                        to={'/auth'}
+                        className="text-orange-400 font-semibold ml-2 hover:underline"
+                    >
                         Login
-                    </span></Link>
+                    </Link>
+
                 </p>
+
             </div>
+
         </div>
     );
 };
