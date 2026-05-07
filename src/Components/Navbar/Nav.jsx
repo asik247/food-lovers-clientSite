@@ -54,7 +54,7 @@ const Nav = () => {
                                     alt="user"
                                     className="w-12 h-12 rounded-full cursor-pointer"
                                 />
-                                : <Link to="/auth" className="btn">LogIn</Link>
+                                : ''
                         }
                     </div>
                     <div>
