@@ -191,7 +191,7 @@ const Nav = () => {
                                         to="/auth"
                                         className="px-6 py-2 rounded-full bg-orange-400 hover:bg-orange-500 text-black font-bold duration-300 shadow-lg"
                                     >
-                                        Login
+                                        Logins
                                     </Link>
 
                                 </div>
