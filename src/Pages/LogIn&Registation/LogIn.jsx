@@ -1,146 +1,225 @@
-<div className="min-h-screen flex items-center justify-center bg-[#0f172a] px-4">
+import React, { useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router';
+import useForm from '../../Hooks/useForm';
+import useAuth from '../../Hooks/useAuth';
+import { sendPasswordResetEmail } from 'firebase/auth';
+import { auth } from '../../Firebase/firebase.init';
 
-    <div className="w-full max-w-sm bg-[#111827] border border-gray-800 rounded-2xl shadow-2xl p-6">
+const LogIn = () => {
 
-        {/* heading */}
-        <div className="text-center mb-6">
+    const [showPassword, setShowPassword] = useState(false);
 
-            <h1 className="text-3xl font-bold text-white">
-                Login
-            </h1>
+    const { logInUsers, googleLogin } = useAuth();
 
-            <p className="text-gray-400 mt-2 text-sm">
-                Welcome back to your account
-            </p>
+    // custom hook
+    const [emailValue, handleEmailChange] = useForm('');
+    const [passwordValue, handlePasswordChange] = useForm('');
 
-        </div>
+    const location = useLocation();
+    const navigate = useNavigate();
 
-        {/* form */}
-        <form onSubmit={handleLoginUser} className="space-y-4">
+    // login submit
+    const handleLoginUser = (e) => {
 
-            {/* email */}
-            <div>
+        e.preventDefault();
 
-                <label className="text-sm text-gray-300 font-medium">
-                    Email
-                </label>
+        logInUsers(emailValue, passwordValue)
+            .then((res) => {
 
-                <input
-                    type="email"
-                    value={emailValue}
-                    onChange={handleEmailChange}
-                    placeholder="Enter your email"
-                    className="w-full mt-2 px-4 py-3 bg-[#1f2937] border border-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-orange-400 duration-300"
-                />
+                console.log('Login Success', res.user);
 
-            </div>
+                navigate(location?.state || '/');
 
-            {/* password */}
-            <div>
+            })
+            .catch(err => {
+                console.log(err.message);
+            });
+    };
 
-                <label className="text-sm text-gray-300 font-medium">
-                    Password
-                </label>
+    // reset password
+    const handlePasswordUpdate = () => {
 
-                <div className="relative mt-2">
+        if (!emailValue) {
+            return alert('Please enter your email first');
+        }
 
-                    <input
-                        type={showPassword ? 'text' : 'password'}
-                        value={passwordValue}
-                        onChange={handlePasswordChange}
-                        placeholder="Enter your password"
-                        className="w-full px-4 py-3 bg-[#1f2937] border border-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-orange-400 duration-300"
-                    />
+        sendPasswordResetEmail(auth, emailValue)
+            .then(() => {
+                alert('Password reset email sent');
+            })
+            .catch(err => {
+                console.log(err.message);
+            });
+    };
 
-                    <button
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-4 top-3 text-sm text-orange-400 font-medium"
-                    >
-                        {showPassword ? 'Hide' : 'Show'}
-                    </button>
+    // google login
+    const handeGoogleLogin = () => {
+
+        googleLogin()
+            .then(res => {
+
+                console.log(res.user);
+
+                navigate(location?.state || '/');
+
+            })
+            .catch(err => {
+                console.log(err.message);
+            });
+    };
+
+    return (
+
+        <div className="min-h-screen flex items-center justify-center bg-[#0f172a] px-4">
+
+            <div className="w-full max-w-sm bg-[#111827] border border-gray-800 rounded-2xl shadow-2xl p-6">
+
+                {/* heading */}
+                <div className="text-center mb-6">
+
+                    <h1 className="text-3xl font-bold text-white">
+                        Login
+                    </h1>
+
+                    <p className="text-gray-400 mt-2 text-sm">
+                        Welcome back to your account
+                    </p>
 
                 </div>
 
-            </div>
-
-            {/* remember + forgot */}
-            <div className="flex justify-between items-center text-sm">
-
-                <label className="flex items-center gap-2 text-gray-400">
-
-                    <input
-                        type="checkbox"
-                        className="checkbox checkbox-warning checkbox-xs"
-                    />
-
-                    Remember
-
-                </label>
-
-                <p
-                    onClick={handlePasswordUpdate}
-                    className="text-orange-400 cursor-pointer hover:underline"
+                {/* form */}
+                <form
+                    onSubmit={handleLoginUser}
+                    className="space-y-4"
                 >
-                    Forgot?
+
+                    {/* email */}
+                    <div>
+
+                        <label className="text-sm text-gray-300 font-medium">
+                            Email
+                        </label>
+
+                        <input
+                            type="email"
+                            value={emailValue}
+                            onChange={handleEmailChange}
+                            placeholder="Enter your email"
+                            className="w-full mt-2 px-4 py-3 bg-[#1f2937] border border-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-orange-400 duration-300"
+                        />
+
+                    </div>
+
+                    {/* password */}
+                    <div>
+
+                        <label className="text-sm text-gray-300 font-medium">
+                            Password
+                        </label>
+
+                        <div className="relative mt-2">
+
+                            <input
+                                type={showPassword ? 'text' : 'password'}
+                                value={passwordValue}
+                                onChange={handlePasswordChange}
+                                placeholder="Enter your password"
+                                className="w-full px-4 py-3 bg-[#1f2937] border border-gray-700 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-orange-400 duration-300"
+                            />
+
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="absolute right-4 top-3 text-sm text-orange-400 font-medium"
+                            >
+                                {showPassword ? 'Hide' : 'Show'}
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    {/* remember + forgot */}
+                    <div className="flex justify-between items-center text-sm">
+
+                        <label className="flex items-center gap-2 text-gray-400">
+
+                            <input
+                                type="checkbox"
+                                className="checkbox checkbox-warning checkbox-xs"
+                            />
+
+                            Remember
+
+                        </label>
+
+                        <p
+                            onClick={handlePasswordUpdate}
+                            className="text-orange-400 cursor-pointer hover:underline"
+                        >
+                            Forgot?
+                        </p>
+
+                    </div>
+
+                    {/* login button */}
+                    <button
+                        type="submit"
+                        className="w-full py-3 rounded-xl bg-gradient-to-r from-orange-500 to-amber-400 text-white font-bold hover:scale-[1.02] duration-300 shadow-lg"
+                    >
+                        Login
+                    </button>
+
+                    {/* divider */}
+                    <div className="flex items-center gap-3">
+
+                        <div className="flex-1 h-[1px] bg-gray-700"></div>
+
+                        <p className="text-gray-400 text-sm">
+                            OR
+                        </p>
+
+                        <div className="flex-1 h-[1px] bg-gray-700"></div>
+
+                    </div>
+
+                    {/* google login */}
+                    <button
+                        onClick={handeGoogleLogin}
+                        type="button"
+                        className="w-full py-3 rounded-xl bg-[#1f2937] hover:bg-[#273548] duration-300 border border-gray-700 text-white font-medium flex items-center justify-center gap-3"
+                    >
+
+                        <img
+                            src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg"
+                            alt="google"
+                            className="w-5 h-5"
+                        />
+
+                        Continue with Google
+
+                    </button>
+
+                </form>
+
+                {/* register */}
+                <p className="text-center text-gray-400 text-sm mt-6">
+
+                    Don’t have an account?
+
+                    <Link
+                        to={'/auth/registation'}
+                        className="text-orange-400 font-semibold ml-2 hover:underline"
+                    >
+                        Register
+                    </Link>
+
                 </p>
 
             </div>
 
-            {/* login button */}
-            <button
-                type="submit"
-                className="w-full py-3 rounded-xl bg-gradient-to-r from-orange-500 to-amber-400 text-white font-bold hover:scale-[1.02] duration-300 shadow-lg"
-            >
-                Login
-            </button>
+        </div>
+    );
+};
 
-            {/* divider */}
-            <div className="flex items-center gap-3">
-
-                <div className="flex-1 h-[1px] bg-gray-700"></div>
-
-                <p className="text-gray-400 text-sm">
-                    OR
-                </p>
-
-                <div className="flex-1 h-[1px] bg-gray-700"></div>
-
-            </div>
-
-            {/* google login */}
-            <button
-                onClick={handeGoogleLogin}
-                type="button"
-                className="w-full py-3 rounded-xl bg-[#1f2937] hover:bg-[#273548] duration-300 border border-gray-700 text-white font-medium flex items-center justify-center gap-3"
-            >
-
-                <img
-                    src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg"
-                    alt="google"
-                    className="w-5 h-5"
-                />
-
-                Continue with Google
-
-            </button>
-
-        </form>
-
-        {/* register */}
-        <p className="text-center text-gray-400 text-sm mt-6">
-
-            Don’t have an account?
-
-            <Link
-                to={'/auth/registation'}
-                className="text-orange-400 font-semibold ml-2 hover:underline"
-            >
-                Register
-            </Link>
-
-        </p>
-
-    </div>
-
-</div>
+export default LogIn;
