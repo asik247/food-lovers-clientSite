@@ -246,6 +246,20 @@ const Home = () => (
       }
     `}</style>
 
+
+
+    {/* Latest Food 6 itmes */}
+    {/* 
+    
+    Featured Reviews (Dynamic)
+-	Display 6 top-rated reviews (fetched from DB)
+-	Each card: Photo, Food Name, Restaurant Name, Restaurant Location, Reviewer Name & Rating
+-	“View Details” button — detailed review page
+-	“Show All” Button — Navigates to the All Reviews page.
+
+    
+    */}
+
   </section>
 );
 
