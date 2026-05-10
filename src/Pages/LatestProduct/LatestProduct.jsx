@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 
 const LatestProduct = ({ singleData }) => {
     if (!singleData) return null;
@@ -47,9 +48,9 @@ const LatestProduct = ({ singleData }) => {
                 <div className="mt-4 flex gap-2">
 
                     {/* VIEW DETAILS */}
-                    <button className="flex-1 bg-orange-500 text-white text-xs font-semibold py-2 rounded-xl shadow hover:bg-orange-600 transition">
+                   <Link to={`${singleData._id}`}> <button className="flex-1 bg-orange-500 text-white text-xs font-semibold py-2 rounded-xl shadow hover:bg-orange-600 transition">
                         View Details
-                    </button>
+                    </button></Link>
 
                     {/* SHOW ALL */}
                     <button className="flex-1 border border-gray-300 text-gray-700 text-xs font-semibold py-2 rounded-xl hover:bg-gray-100 transition">

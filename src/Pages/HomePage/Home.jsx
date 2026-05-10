@@ -9,6 +9,7 @@ import banner2 from '../../assets/bannerb.jpg';
 import banner3 from '../../assets/bannerc.jpg';
 import useInstance from '../../Hooks/useInstance';
 import LatestProduct from '../LatestProduct/LatestProduct';
+import { Circles } from 'react-loader-spinner';
 
 const slides = [
   {
@@ -18,7 +19,6 @@ const slides = [
     sub: 'Wagyu beef · Aged cheddar · Secret sauce',
     cta: 'Order Now',
     accent: 'bg-orange-500',
-    dark: 'from-black/70',
   },
   {
     id: 2,
@@ -27,7 +27,6 @@ const slides = [
     sub: 'Neapolitan · 900 °F stone oven · Fresh basil',
     cta: 'Order Now',
     accent: 'bg-indigo-500',
-    dark: 'from-black/70',
   },
   {
     id: 3,
@@ -36,18 +35,24 @@ const slides = [
     sub: 'Korean double-fry · Honey gochujang · Pickles',
     cta: 'Order Now',
     accent: 'bg-green-500',
-    dark: 'from-black/70',
   },
 ];
 
 const Home = () => {
   const instance = useInstance();
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     instance.get('/products')
-      .then(res => setData(res.data))
-      .catch(err => console.log(err));
+      .then(res => {
+        setData(res.data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.log(err);
+        setLoading(false);
+      });
   }, [instance]);
 
   return (
@@ -62,24 +67,20 @@ const Home = () => {
           pagination={{ clickable: true }}
           navigation
           loop
-          className="group"
         >
 
           {slides.map((s) => (
             <SwiperSlide key={s.id}>
               <div className="relative h-[280px] md:h-[360px] flex items-center">
 
-                {/* IMAGE */}
                 <img
                   src={s.image}
                   alt={s.title}
                   className="absolute inset-0 w-full h-full object-cover scale-105"
                 />
 
-                {/* OVERLAY */}
                 <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent" />
 
-                {/* CONTENT */}
                 <div className="relative z-10 px-6 md:px-12 max-w-lg">
 
                   <h1 className="text-white text-3xl md:text-5xl font-black leading-tight whitespace-pre-line">
@@ -111,20 +112,36 @@ const Home = () => {
           Latest Products
         </h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {loading ? (
+          <div className="flex flex-col items-center justify-center py-10 text-gray-500">
 
-          {data.map((singleData) => (
-            <LatestProduct
-              key={singleData._id}
-              singleData={singleData}
+            {/* Spinner */}
+           <Circles
+              height="80"
+              width="80"
+              color="#4fa94d"
+              ariaLabel="circles-loading"
+              wrapperStyle={{}}
+              wrapperClass=""
+              visible={true}
             />
-          ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
-        </div>
+            {data.map((singleData) => (
+              <LatestProduct
+                key={singleData._id}
+                singleData={singleData}
+              />
+            ))}
+
+          </div>
+        )}
 
       </div>
 
-      {/* ================= SWIPER BUTTON STYLE (TAILWIND ONLY) ================= */}
+      {/* ================= SWIPER STYLE ================= */}
       <style>{`
         .swiper-button-next,
         .swiper-button-prev {
