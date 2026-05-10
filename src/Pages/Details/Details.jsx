@@ -1,7 +1,15 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useLoaderData } from 'react-router';
+import useAuth from '../../Hooks/useAuth';
 
 const Details = () => {
+    //?current user;
+    const { user } = useAuth();
+    console.log('currentUserDetail:', user);
+    const handleModalRef = useRef(null);
+    const handleModaelOpen = () => {
+        handleModalRef.current.showModal();
+    }
     const {
         photo, foodName, category, restaurantName,
         location, email, price, rating, reviewCount,
@@ -28,7 +36,7 @@ const Details = () => {
                     </div>
                     <div className="text-right">
                         <div className="text-yellow-400 text-xs">{'★'.repeat(Math.round(rating))}</div>
-                        <div className="text-xs text-white/60">{(reviewCount/1000).toFixed(0)}k reviews</div>
+                        <div className="text-xs text-white/60">{(reviewCount / 1000).toFixed(0)}k reviews</div>
                     </div>
                 </div>
             </div>
@@ -38,7 +46,7 @@ const Details = () => {
                 {[
                     { val: rating.toFixed(1), lbl: 'Rating' },
                     { val: deliveryTime, lbl: 'Delivery' },
-                    { val: `${(reviewCount/1000).toFixed(0)}k`, lbl: 'Reviews' },
+                    { val: `${(reviewCount / 1000).toFixed(0)}k`, lbl: 'Reviews' },
                 ].map(({ val, lbl }) => (
                     <div key={lbl} className="bg-gray-100 rounded-lg p-2 text-center">
                         <div className="text-base font-bold">{val}</div>
@@ -53,7 +61,7 @@ const Details = () => {
                 <p className="text-xs text-gray-500 leading-relaxed">{description}</p>
             </div>
 
-           
+
 
             {/* Info */}
             <div className="border border-gray-200 rounded-xl p-3">
@@ -80,10 +88,82 @@ const Details = () => {
                 </div>
             </div>
 
-            <button className="w-full py-2.5 bg-black text-white rounded-xl text-sm font-medium hover:bg-gray-800 transition-colors">
+            <button onClick={handleModaelOpen} className="w-full py-2.5 bg-black text-white rounded-xl text-sm font-medium hover:bg-gray-800 transition-colors">
                 🛒 Add {qty} to Cart — ${price * qty}
             </button>
-            
+            {/* Open the modal using document.getElementById('ID').showModal() method */}
+            {/* <button className="btn" onClick={() => document.getElementById('my_modal_5').showModal()}>open modal</button> */}
+            <dialog ref={handleModalRef} id="my_modal_5" className="modal modal-bottom sm:modal-middle">
+                <div className="modal-box p-0 overflow-hidden max-w-[480px]">
+
+                    {/* Header */}
+                    <div className="flex items-center justify-between px-6 py-4 border-b border-base-200">
+                        <div>
+                            <p className="text-xs text-base-content/50 uppercase tracking-wider mb-0.5">Submit your</p>
+                            <h3 className="font-medium text-lg">Product review</h3>
+                        </div>
+                        <form method="dialog">
+                            <button className="btn btn-sm btn-ghost btn-circle">✕</button>
+                        </form>
+                    </div>
+
+                    {/* Body */}
+                    <div className="px-6 py-5">
+
+                        {/* Name & Email */}
+                        <div className="grid grid-cols-2 gap-3 mb-3">
+                            <div>
+                                <label className="label py-1"><span className="label-text text-xs font-medium">Full name</span></label>
+                                <input type="text" placeholder="e.g. Rafiq Ahmed" className="input input-bordered input-sm w-full" />
+                            </div>
+                            <div>
+                                <label className="label py-1"><span className="label-text text-xs font-medium">Email address</span></label>
+                                <input type="email" placeholder="you@example.com" className="input input-bordered input-sm w-full" />
+                            </div>
+                        </div>
+
+                        {/* Product Name & Price */}
+                        <div className="grid grid-cols-2 gap-3 mb-3">
+                            <div>
+                                <label className="label py-1"><span className="label-text text-xs font-medium">Product name</span></label>
+                                <input type="text" placeholder="e.g. Wireless Headset" className="input input-bordered input-sm w-full" />
+                            </div>
+                            <div>
+                                <label className="label py-1"><span className="label-text text-xs font-medium">Price paid</span></label>
+                                <input type="number" placeholder="0.00" className="input input-bordered input-sm w-full" />
+                            </div>
+                        </div>
+
+                        {/* Rating */}
+                        <div className="mb-3">
+                            <label className="label py-1"><span className="label-text text-xs font-medium">Rating</span></label>
+                            <div className="rating rating-md">
+                                <input type="radio" name="rating" className="mask mask-star-2 bg-amber-400" />
+                                <input type="radio" name="rating" className="mask mask-star-2 bg-amber-400" />
+                                <input type="radio" name="rating" className="mask mask-star-2 bg-amber-400" defaultChecked />
+                                <input type="radio" name="rating" className="mask mask-star-2 bg-amber-400" />
+                                <input type="radio" name="rating" className="mask mask-star-2 bg-amber-400" />
+                            </div>
+                        </div>
+
+                        {/* Review */}
+                        <div className="mb-5">
+                            <label className="label py-1"><span className="label-text text-xs font-medium">Your review</span></label>
+                            <textarea className="textarea textarea-bordered w-full" rows={4} placeholder="Share your experience..." />
+                        </div>
+
+                        {/* Actions */}
+                        <div className="modal-action mt-0">
+                            <form method="dialog" className="flex gap-2 w-full">
+                                <button className="btn btn-ghost flex-1">Cancel</button>
+                                <button className="btn btn-neutral flex-[2]">Submit review</button>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </dialog>
+
 
         </div>
     );
