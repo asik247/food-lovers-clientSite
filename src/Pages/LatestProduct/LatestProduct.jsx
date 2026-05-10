@@ -48,7 +48,7 @@ const LatestProduct = ({ singleData }) => {
                 <div className="mt-4 flex gap-2">
 
                     {/* VIEW DETAILS */}
-                   <Link to={`${singleData._id}`}> <button className="flex-1 bg-orange-500 text-white text-xs font-semibold py-2 rounded-xl shadow hover:bg-orange-600 transition">
+                   <Link to={`/details/${singleData._id}`}> <button  className="flex-1 bg-orange-500 text-white text-xs font-semibold py-2 rounded-xl shadow hover:bg-orange-600 transition">
                         View Details
                     </button></Link>
 
