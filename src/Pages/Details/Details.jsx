@@ -114,11 +114,11 @@ const Details = () => {
                         <div className="grid grid-cols-2 gap-3 mb-3">
                             <div>
                                 <label className="label py-1"><span className="label-text text-xs font-medium">Full name</span></label>
-                                <input type="text" placeholder="e.g. Rafiq Ahmed" className="input input-bordered input-sm w-full" />
+                                <input type="text" defaultValue={user?.displayName} readOnly placeholder="e.g. Rafiq Ahmed" className="input input-bordered input-sm w-full" />
                             </div>
                             <div>
                                 <label className="label py-1"><span className="label-text text-xs font-medium">Email address</span></label>
-                                <input type="email" placeholder="you@example.com" className="input input-bordered input-sm w-full" />
+                                <input type="email" defaultValue={user?.email} readOnly placeholder="you@example.com" className="input input-bordered input-sm w-full" />
                             </div>
                         </div>
 
@@ -126,11 +126,11 @@ const Details = () => {
                         <div className="grid grid-cols-2 gap-3 mb-3">
                             <div>
                                 <label className="label py-1"><span className="label-text text-xs font-medium">Product name</span></label>
-                                <input type="text" placeholder="e.g. Wireless Headset" className="input input-bordered input-sm w-full" />
+                                <input type="text" placeholder="e.g. Wireless Headset" defaultValue={foodName} readOnly className="input input-bordered input-sm w-full" />
                             </div>
                             <div>
                                 <label className="label py-1"><span className="label-text text-xs font-medium">Price paid</span></label>
-                                <input type="number" placeholder="0.00" className="input input-bordered input-sm w-full" />
+                                <input type="number" placeholder="0.00" defaultValue={price} readOnly className="input input-bordered input-sm w-full" />
                             </div>
                         </div>
 
