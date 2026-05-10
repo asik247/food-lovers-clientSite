@@ -10,6 +10,10 @@ const Details = () => {
     const handleModaelOpen = () => {
         handleModalRef.current.showModal();
     }
+    //?post reviws in db;
+    const handlePostDB = ()=>{
+        
+    }
     const {
         photo, foodName, category, restaurantName,
         location, email, price, rating, reviewCount,
