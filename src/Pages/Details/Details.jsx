@@ -7,7 +7,7 @@ const Details = () => {
     //?current user;
     const { user } = useAuth();
     const instance = useInstance()
-    console.log('currentUserDetail:', user);
+    // console.log('currentUserDetail:', user);
     const handleModalRef = useRef(null);
     const handleModaelOpen = () => {
         handleModalRef.current.showModal();
@@ -32,10 +32,19 @@ const Details = () => {
             category: category,
             addReview: review
         }
+        //!useEffect;
+        
         //Todo:post all review in server side;
         instance.post('/allReviews', newReviews)
-            .then(res => {
-                console.log(res.data);
+            .then(data => {
+                // console.log(res.data);
+                 console.log('after db data',data.data);
+                // ? condition cheack;
+                if(data.data.insertedId){
+                    handleModalRef.current.close()
+                    //!Alert show korbe;
+                }
+               
             });
     }
     return (
