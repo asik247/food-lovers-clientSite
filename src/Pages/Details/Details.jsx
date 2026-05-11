@@ -1,27 +1,43 @@
 import React, { useRef, useState } from 'react';
-import { useLoaderData } from 'react-router';
+import { data, useLoaderData } from 'react-router';
 import useAuth from '../../Hooks/useAuth';
+import useInstance from '../../Hooks/useInstance';
 
 const Details = () => {
     //?current user;
     const { user } = useAuth();
+    const instance = useInstance()
     console.log('currentUserDetail:', user);
     const handleModalRef = useRef(null);
     const handleModaelOpen = () => {
         handleModalRef.current.showModal();
     }
-    //?post reviws in db;
-    const handlePostDB = ()=>{
-        
-    }
+
+
     const {
         photo, foodName, category, restaurantName,
         location, email, price, rating, reviewCount,
-        review, description, deliveryTime, isAvailable
+        review, description, deliveryTime, isAvailable, _id: productId
     } = useLoaderData();
 
     const [qty, setQty] = useState(1);
-
+    //?post reviws in db;
+    const handlePostDBReview = (e) => {
+        e.preventDefault();
+        const review = e.target.review.value;
+        const newReviews = {
+            productId: productId,
+            foodName: foodName,
+            foodPhoto: photo,
+            category: category,
+            addReview: review
+        }
+        //Todo:post all review in server side;
+        instance.post('/allReviews', newReviews)
+            .then(res => {
+                console.log(res.data);
+            });
+    }
     return (
         <div className="max-w-md mx-auto px-3 py-3 flex flex-col gap-2">
 
@@ -113,56 +129,54 @@ const Details = () => {
 
                     {/* Body */}
                     <div className="px-6 py-5">
+                        <form onSubmit={handlePostDBReview}>
+                            {/* Name & Email */}
+                            <div className="grid grid-cols-2 gap-3 mb-3">
+                                <div>
+                                    <label className="label py-1"><span className="label-text text-xs font-medium">Full name</span></label>
+                                    <input type="text" defaultValue={user?.displayName} readOnly placeholder="e.g. Rafiq Ahmed" className="input input-bordered input-sm w-full" />
+                                </div>
+                                <div>
+                                    <label className="label py-1"><span className="label-text text-xs font-medium">Email address</span></label>
+                                    <input type="email" defaultValue={user?.email} readOnly placeholder="you@example.com" className="input input-bordered input-sm w-full" />
+                                </div>
+                            </div>
 
-                        {/* Name & Email */}
-                        <div className="grid grid-cols-2 gap-3 mb-3">
+                            {/* Product Name & Price */}
+                            <div className="grid grid-cols-2 gap-3 mb-3">
+                                <div>
+                                    <label className="label py-1"><span className="label-text text-xs font-medium">Product name</span></label>
+                                    <input type="text" placeholder="e.g. Wireless Headset" defaultValue={foodName} readOnly className="input input-bordered input-sm w-full" />
+                                </div>
+                                <div>
+                                    <label className="label py-1"><span className="label-text text-xs font-medium">Price paid</span></label>
+                                    <input type="number" placeholder="0.00" defaultValue={price} readOnly className="input input-bordered input-sm w-full" />
+                                </div>
+                            </div>
+
+                            {/* Rating */}
+                            <div className="mb-3">
+                                <label className="label py-1"><span className="label-text text-xs font-medium">Rating</span></label>
+                                <div className="rating rating-md">
+                                    <input type="radio" name="rating" className="mask mask-star-2 bg-amber-400" />
+                                    <input type="radio" name="rating" className="mask mask-star-2 bg-amber-400" />
+                                    <input type="radio" name="rating" className="mask mask-star-2 bg-amber-400" defaultChecked />
+                                    <input type="radio" name="rating" className="mask mask-star-2 bg-amber-400" />
+                                    <input type="radio" name="rating" className="mask mask-star-2 bg-amber-400" />
+                                </div>
+                            </div>
+
+                            {/* Review */}
+                            <div className="mb-5">
+                                <label className="label py-1"><span className="label-text text-xs font-medium">Your review</span></label>
+                                <textarea name='review' className="textarea textarea-bordered w-full" rows={4} placeholder="Share your experience..." />
+                            </div>
+
                             <div>
-                                <label className="label py-1"><span className="label-text text-xs font-medium">Full name</span></label>
-                                <input type="text" defaultValue={user?.displayName} readOnly placeholder="e.g. Rafiq Ahmed" className="input input-bordered input-sm w-full" />
+                                <button className="btn btn-neutral w-full">Submit review</button>
                             </div>
-                            <div>
-                                <label className="label py-1"><span className="label-text text-xs font-medium">Email address</span></label>
-                                <input type="email" defaultValue={user?.email} readOnly placeholder="you@example.com" className="input input-bordered input-sm w-full" />
-                            </div>
-                        </div>
 
-                        {/* Product Name & Price */}
-                        <div className="grid grid-cols-2 gap-3 mb-3">
-                            <div>
-                                <label className="label py-1"><span className="label-text text-xs font-medium">Product name</span></label>
-                                <input type="text" placeholder="e.g. Wireless Headset" defaultValue={foodName} readOnly className="input input-bordered input-sm w-full" />
-                            </div>
-                            <div>
-                                <label className="label py-1"><span className="label-text text-xs font-medium">Price paid</span></label>
-                                <input type="number" placeholder="0.00" defaultValue={price} readOnly className="input input-bordered input-sm w-full" />
-                            </div>
-                        </div>
-
-                        {/* Rating */}
-                        <div className="mb-3">
-                            <label className="label py-1"><span className="label-text text-xs font-medium">Rating</span></label>
-                            <div className="rating rating-md">
-                                <input type="radio" name="rating" className="mask mask-star-2 bg-amber-400" />
-                                <input type="radio" name="rating" className="mask mask-star-2 bg-amber-400" />
-                                <input type="radio" name="rating" className="mask mask-star-2 bg-amber-400" defaultChecked />
-                                <input type="radio" name="rating" className="mask mask-star-2 bg-amber-400" />
-                                <input type="radio" name="rating" className="mask mask-star-2 bg-amber-400" />
-                            </div>
-                        </div>
-
-                        {/* Review */}
-                        <div className="mb-5">
-                            <label className="label py-1"><span className="label-text text-xs font-medium">Your review</span></label>
-                            <textarea className="textarea textarea-bordered w-full" rows={4} placeholder="Share your experience..." />
-                        </div>
-
-                        {/* Actions */}
-                        <div className="modal-action mt-0">
-                            <form method="dialog" className="flex gap-2 w-full">
-                                <button className="btn btn-ghost flex-1">Cancel</button>
-                                <button className="btn btn-neutral flex-[2]">Submit review</button>
-                            </form>
-                        </div>
+                        </form>
 
                     </div>
                 </div>
