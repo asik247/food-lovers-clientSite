@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { data, useLoaderData } from 'react-router';
 import useAuth from '../../Hooks/useAuth';
 import useInstance from '../../Hooks/useInstance';
@@ -7,13 +7,12 @@ const Details = () => {
     //?current user;
     const { user } = useAuth();
     const instance = useInstance()
+    const [reviews, setReviews] = useState([])
     // console.log('currentUserDetail:', user);
     const handleModalRef = useRef(null);
     const handleModaelOpen = () => {
         handleModalRef.current.showModal();
     }
-
-
     const {
         photo, foodName, category, restaurantName,
         location, email, price, rating, reviewCount,
@@ -22,6 +21,14 @@ const Details = () => {
 
     const [qty, setQty] = useState(1);
     //?post reviws in db;
+    // //!useEffect;
+    useEffect(() => {
+        instance.get(`/allReviews/${productId}`)
+            .then(data => {
+                // console.log(data.data);
+                setReviews(data.data)
+            })
+    }, [instance, productId])
     const handlePostDBReview = (e) => {
         e.preventDefault();
         const review = e.target.review.value;
@@ -29,22 +36,28 @@ const Details = () => {
             productId: productId,
             foodName: foodName,
             foodPhoto: photo,
+            foodEmail:user?.email,
             category: category,
             addReview: review
         }
-        //!useEffect;
-        
+        console.log(newReviews);
+
         //Todo:post all review in server side;
         instance.post('/allReviews', newReviews)
             .then(data => {
                 // console.log(res.data);
-                 console.log('after db data',data.data);
+                console.log('after db data', data.data);
                 // ? condition cheack;
-                if(data.data.insertedId){
+                if (data.data.insertedId) {
+                    newReviews._id = data.data.insertedId;
+                    const updateReview = [...reviews, newReviews]
+                    setReviews(updateReview)
                     handleModalRef.current.close()
                     //!Alert show korbe;
+
+
                 }
-               
+
             });
     }
     return (
@@ -191,9 +204,82 @@ const Details = () => {
                 </div>
             </dialog>
 
+            {/* Table */}
+            <div>
+                {
+                    reviews.map(singleReview => <div>
+                        <h2>{singleReview.foodName}</h2>
+                        {
+                            console.log(singleReview)
+                        }
+                    </div>
+                        // console.log('after show',singleReview);
+
+                    )
+                }
+                <div className="overflow-x-auto">
+                    <table className="table">
+                        {/* head */}
+                        <thead>
+                            <tr>
+                                <th>
+                                   SL.NO:
+                                </th>
+                                <th>ProductId:</th>
+                                <th>FoodName</th>
+                                <th>FoodImage</th>
+                                <th>Review</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {/* row 1 */}
+                            <tr>
+                                <td>
+                                    <div className="flex items-center gap-3">
+                                        <div className="avatar">
+                                            <div className="mask mask-squircle h-12 w-12">
+                                                <img
+                                                    src="https://img.daisyui.com/images/profile/demo/2@94.webp"
+                                                    alt="Avatar Tailwind CSS Component" />
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div className="font-bold">Hart Hagerty</div>
+                                            <div className="text-sm opacity-50">United States</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    Zemlak, Daniel and Leannon
+                                    <br />
+                                    <span className="badge badge-ghost badge-sm">Desktop Support Technician</span>
+                                </td>
+                                <td>Purple</td>
+                                <th>
+                                    <button className="btn btn-ghost btn-xs">details</button>
+                                </th>
+                            </tr>
+                            
+                           
+                           
+                        </tbody>
+                       
+                    </table>
+                </div>
+            </div>
+
 
         </div>
     );
 };
 
 export default Details;
+
+/**{
+    "_id": "6a02216fc743d4c1c073a58a",
+    "productId": "69ff7d49cae9500796bac7d4",
+    "foodName": "French Croissant",
+    "foodPhoto": "https://images.unsplash.com/photo-1534482421-64566f976cfa?w=400",
+    "category": "Bakery",
+    "addReview": ""
+} */
