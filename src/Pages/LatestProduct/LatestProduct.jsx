@@ -45,15 +45,49 @@ const LatestProduct = ({ singleData }) => {
                 </p>
 
                 {/* BUTTONS */}
-                <div className="mt-4 flex gap-2">
+                {/* BUTTONS */}
+                <div className="mt-4 flex items-center gap-2">
 
                     {/* VIEW DETAILS */}
-                   <Link to={`/details/${singleData._id}`}> <button  className="flex-1 bg-orange-500 text-white text-xs font-semibold py-2 rounded-xl shadow hover:bg-orange-600 transition">
-                        View Details
-                    </button></Link>
+                    <Link
+                        to={`/details/${singleData._id}`}
+                        className="
+        flex-1
+        text-center
+        py-2.5
+        rounded-xl
+        text-sm
+        font-semibold
+        text-white
+        bg-gradient-to-r
+        from-[#1e293b]
+        via-[#312e81]
+        to-[#4c1d95]
+        hover:opacity-90
+        hover:shadow-[0_0_20px_rgba(99,102,241,0.35)]
+        transition-all
+        duration-300
+        "
+                    >
+                        View Details →
+                    </Link>
 
                     {/* SHOW ALL */}
-                    <button className="flex-1 border border-gray-300 text-gray-700 text-xs font-semibold py-2 rounded-xl hover:bg-gray-100 transition">
+                    <button
+                        className="
+        flex-1
+        py-2.5
+        rounded-xl
+        text-sm
+        font-semibold
+        border
+        border-gray-300
+        text-gray-700
+        hover:bg-gray-100
+        transition-all
+        duration-300
+        "
+                    >
                         Show All
                     </button>
 
