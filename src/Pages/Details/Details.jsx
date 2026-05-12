@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useLoaderData } from 'react-router';
 import useAuth from '../../Hooks/useAuth';
 import useInstance from '../../Hooks/useInstance';
+import Swal from 'sweetalert2';
 
 const Details = () => {
     //?currentuser and instance get;
@@ -53,34 +54,44 @@ const Details = () => {
 
         instance.post('/allReviews', newReview)
             .then(res => {
-
                 if (res.data.insertedId) {
-
-                    newReview._id = res.data.insertedId;
-
-                    const updatedReview = [...reviews, newReview];
-
-                    setReviews(updatedReview);
-
                     handleModalRef.current?.close();
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: "Your review has been post",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
 
-                    e.target.reset();
                 }
+                newReview._id = res.data.insertedId;
+                const updatedReview = [...reviews, newReview];
+                setReviews(updatedReview);
             })
             .catch(error => {
                 console.log(error);
             });
     };
     //!Review Remove;
-   const handleReviewRemove = (id)=>{
-    console.log('remvoe review',id);
-    instance.delete(`/allReviews/${id}`)
-    .then(res=>{
-        console.log(res.data);
-        const remineReview = reviews.filter(review=>review._id !== id);
-        setReviews(remineReview)
-    })
-   }
+    const handleReviewRemove = (id) => {
+        console.log('remvoe review', id);
+        instance.delete(`/allReviews/${id}`)
+            .then(res => {
+                console.log(res.data);
+                if(res.data.deletedCount){
+                     Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: "Remove Review successfully",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+                const remineReview = reviews.filter(review => review._id !== id);
+                setReviews(remineReview)
+            })
+    }
 
     return (
 
@@ -355,7 +366,7 @@ const Details = () => {
                                         </td>
 
                                         <td>
-                                            <button onClick={()=>handleReviewRemove(singleReview._id)}
+                                            <button onClick={() => handleReviewRemove(singleReview._id)}
                                                 className="btn btn-xs btn-error btn-outline"
                                             >
                                                 Remove
