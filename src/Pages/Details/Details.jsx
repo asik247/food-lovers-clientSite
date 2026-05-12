@@ -3,10 +3,14 @@ import { useLoaderData } from 'react-router';
 import useAuth from '../../Hooks/useAuth';
 import useInstance from '../../Hooks/useInstance';
 import Swal from 'sweetalert2';
+import useSecqure from '../../Hooks/useSecqure';
 
 const Details = () => {
+    //!instanceSecure;
+    const instance2 = useSecqure();
     //?currentuser and instance get;
     const { user } = useAuth();
+    // console.log('currentUser', user);
     const instance = useInstance();
     //?show reviews state;
     const [reviews, setReviews] = useState([]);
@@ -30,15 +34,16 @@ const Details = () => {
     } = useLoaderData();
     //! load reviews
     useEffect(() => {
-        instance.get(`/allReviews/${productId}`)
+        instance2(`/allReviews/${productId}`)
             .then(res => {
+                // console.log(res.data);
                 setReviews(res.data);
             })
             .catch(error => {
                 console.log(error);
             });
 
-    }, [instance, productId]);
+    }, [instance2, productId]);
     //! add review
     const handlePostDBReview = (e) => {
         e.preventDefault();
@@ -79,8 +84,8 @@ const Details = () => {
         instance.delete(`/allReviews/${id}`)
             .then(res => {
                 console.log(res.data);
-                if(res.data.deletedCount){
-                     Swal.fire({
+                if (res.data.deletedCount) {
+                    Swal.fire({
                         position: "top-end",
                         icon: "success",
                         title: "Remove Review successfully",
