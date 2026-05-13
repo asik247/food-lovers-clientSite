@@ -57,7 +57,7 @@ const Details = () => {
             addReview: reviewText
         };
 
-        instance.post('/allReviews', newReview)
+        instance2.post('/allReviews', newReview)
             .then(res => {
                 if (res.data.insertedId) {
                     handleModalRef.current?.close();

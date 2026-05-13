@@ -51,51 +51,19 @@ const LatestProduct = ({ singleData }) => {
                     {/* VIEW DETAILS */}
                     <Link
                         to={`/details/${singleData._id}`}
-                        className="
-        flex-1
-        text-center
-        py-2.5
-        rounded-xl
-        text-sm
-        font-semibold
-        text-white
-        bg-gradient-to-r
-        from-[#1e293b]
-        via-[#312e81]
-        to-[#4c1d95]
-        hover:opacity-90
-        hover:shadow-[0_0_20px_rgba(99,102,241,0.35)]
-        transition-all
-        duration-300
-        "
+                        className="  flex-1 text-center py-2.5 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-[#1e293b] via-[#312e81] to-[#4c1d95] hover:opacity-90 hover:shadow-[0_0_20px_rgba(99,102,241,0.35)] transition-all duration-300 "
                     >
                         View Details →
                     </Link>
 
-                    {/* SHOW ALL */}
-                    <button
-                        className="
-        flex-1
-        py-2.5
-        rounded-xl
-        text-sm
-        font-semibold
-        border
-        border-gray-300
-        text-gray-700
-        hover:bg-gray-100
-        transition-all
-        duration-300
-        "
-                    >
-                        Show All
-                    </button>
+
 
                 </div>
 
             </div>
 
         </div>
+        
     );
 };
 

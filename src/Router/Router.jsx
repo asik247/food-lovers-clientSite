@@ -11,6 +11,7 @@ import DashBoard from "../Pages/DashBoard/DashBoard";
 import AddReview from "../Pages/AddReview/AddReview";
 import MyReviews from "../Pages/MyReviews/MyReviews";
 import Details from "../Pages/Details/Details";
+import AllReviews from "../Pages/AllReviews/AllReviews";
 
 const router = createBrowserRouter([
     {
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
                 path:'details/:id',
                 loader:({params})=>fetch(`http://localhost:3000/products/${params.id}`),
                 element:<PrivateRoutes><Details></Details></PrivateRoutes>
+            },
+            {
+                path:'allReviews',
+                element:<PrivateRoutes><AllReviews></AllReviews></PrivateRoutes>
             }
 
         ]

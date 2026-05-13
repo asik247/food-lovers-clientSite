@@ -10,6 +10,8 @@ import banner3 from '../../assets/bannerc.jpg';
 import useInstance from '../../Hooks/useInstance';
 import LatestProduct from '../LatestProduct/LatestProduct';
 import { Circles } from 'react-loader-spinner';
+import AllReviews from '../AllReviews/AllReviews';
+import { Link } from 'react-router';
 
 const slides = [
   {
@@ -116,7 +118,7 @@ const Home = () => {
           <div className="flex flex-col items-center justify-center py-10 text-gray-500">
 
             {/* Spinner */}
-           <Circles
+            <Circles
               height="80"
               width="80"
               color="#4fa94d"
@@ -175,6 +177,11 @@ const Home = () => {
           border-radius: 4px !important;
         }
       `}</style>
+{/* Show All Btn and navigate AllReviews Pages */}
+      <div className='mt-4 flex justify-center items-center btn btn-ghost'>
+        <Link to={'/allReviews'}>Show All</Link>
+
+      </div>
 
     </section>
   );
