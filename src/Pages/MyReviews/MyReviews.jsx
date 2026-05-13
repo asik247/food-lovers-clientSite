@@ -11,7 +11,7 @@ const MyReviews = () => {
     useEffect(() => {
 
         if (user?.email) {
-            instance(`/allReviews?email=${user.email}`)
+            instance(`/myReviews?email=${user.email}`)
                 .then(res => {
                     setMyr(res.data);
 
@@ -38,6 +38,7 @@ const MyReviews = () => {
                 <h1 className="text-4xl md:text-5xl font-bold text-black mt-2">
                     My Reviews
                 </h1>
+                <p>{myr.length}</p>
 
                
 

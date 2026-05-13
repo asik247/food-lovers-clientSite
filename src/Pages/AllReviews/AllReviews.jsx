@@ -119,7 +119,7 @@ const SkeletonCard = () => (
 /* -------------------- MAIN COMPONENT -------------------- */
 
 const AllReviews = () => {
-    const instance = useInstance();
+    const instance2 = useInstance()
 
     const [reviews, setReviews] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -127,10 +127,10 @@ const AllReviews = () => {
     const [selectedCategory, setSelectedCategory] = useState('All');
 
     useEffect(() => {
-        instance('/allReviews')
+        instance2('/allReviews')
             .then((res) => setReviews(res.data))
             .finally(() => setLoading(false));
-    }, [instance]);
+    }, [instance2]);
 
     const categories = [
         'All',
