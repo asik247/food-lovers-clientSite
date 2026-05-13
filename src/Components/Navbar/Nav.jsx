@@ -35,6 +35,18 @@ const Nav = () => {
                     Dashboard
                 </NavLink>
             </li>
+            <li>
+                <NavLink
+                    to="/myReviews"
+                    className={({ isActive }) =>
+                        isActive
+                            ? "text-orange-400 font-bold"
+                            : "hover:text-orange-300 duration-300"
+                    }
+                >
+                   My Reviews
+                </NavLink>
+            </li>
         </>
     );
 
