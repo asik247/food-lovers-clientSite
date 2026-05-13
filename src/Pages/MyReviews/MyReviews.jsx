@@ -2,16 +2,18 @@ import React, { useEffect, useState } from 'react';
 import useAuth from '../../Hooks/useAuth';
 import { FaStar, FaTrash, FaEdit } from 'react-icons/fa';
 import useSecqure from '../../Hooks/useSecqure';
+import useSecure2 from '../../Hooks/useSecure2';
 
 const MyReviews = () => {
     const { user } = useAuth();
     const [myr, setMyr] = useState([]);
-    const instance = useSecqure()
+    // const instance = useSecqure()
+    const instance2 = useSecure2()
     // fetch reviews
     useEffect(() => {
 
         if (user?.email) {
-            instance(`/myReviews?email=${user.email}`)
+            instance2(`/myReviews?email=${user.email}`)
                 .then(res => {
                     setMyr(res.data);
 
@@ -22,7 +24,7 @@ const MyReviews = () => {
                 });
         }
 
-    }, [user, instance]);
+    }, [user, instance2]);
 
     return (
 

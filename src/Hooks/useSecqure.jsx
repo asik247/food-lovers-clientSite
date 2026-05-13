@@ -1,7 +1,6 @@
 import axios from "axios"
 import { useEffect } from "react"
 import useAuth from "./useAuth"
-
 const instance = axios.create({
     baseURL: "http://localhost:3000"
 })
@@ -19,8 +18,6 @@ const useSecqure = () => {
         return () => {
             instance.interceptors.request.eject(requestIntersepter)
         }
-
-
     }, [user])
     return instance
 }
