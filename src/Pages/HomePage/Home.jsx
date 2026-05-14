@@ -206,7 +206,7 @@ const Home = () => {
         >
 
           <span className="relative z-10">
-            Show All Reviews
+            Show All Reviews2
           </span>
 
           <span
