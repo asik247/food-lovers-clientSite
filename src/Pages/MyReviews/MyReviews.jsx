@@ -5,11 +5,14 @@ import useInstance from '../../Hooks/useInstance';
 import Swal from 'sweetalert2';
 import { Link } from 'react-router';
 import { FaEdit, FaTrash } from 'react-icons/fa';
+import useJWTInstance from '../../Hooks/JWTToken/useJWTInstance';
 
 const MyReviews = () => {
     const { user } = useAuth();
     const instance2 = useSecure2();
     const instance = useInstance();
+    // Jwt cusom generat toke implement✔️✔️
+    const jwtInstance = useJWTInstance()
 
     const [myr, setMyr] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -21,17 +24,18 @@ const MyReviews = () => {
         if (user?.email) {
             setLoading(true);
 
-            instance2(`/myReviews?email=${user.email}`)
+            jwtInstance(`/myReviews?email=${user.email}`)
                 .then(res => {
                     setMyr(res.data);
                     setLoading(false);
+                    // console.log(res.data.token);
                 })
                 .catch(err => {
                     console.log(err);
                     setLoading(false);
                 });
         }
-    }, [user, instance2]);
+    }, [user, jwtInstance]);
 
     // delete
     const deleteMyReview = (id) => {
