@@ -18,7 +18,7 @@ const AddReview = () => {
         // console.log(createData);
         instance.post('/creatNewFood', createData)
             .then(res => {
-                console.log('after create food', res.data);
+                // console.log('after create food', res.data);
                 if (res.data.insertedId) {
                     Swal.fire({
                         position: "top-end",
@@ -52,6 +52,7 @@ const AddReview = () => {
                             name="foodName"
                             value={foodName}
                             onChange={handleFoodName}
+                            required
                             placeholder="Enter food name"
                             className="w-full mt-1 px-3 py-2 text-sm sm:text-base border rounded-lg 
                             bg-gradient-to-r from-gray-50 to-white 
@@ -69,6 +70,7 @@ const AddReview = () => {
                             name="foodImage"
                             value={foodURL}
                             onChange={handleFoodURL}
+                            required
                             placeholder="Paste image URL"
                             className="w-full mt-1 px-3 py-2 text-sm sm:text-base border rounded-lg 
                             bg-gradient-to-r from-gray-50 to-white 
@@ -86,6 +88,7 @@ const AddReview = () => {
                             name="restaurantName"
                             value={resturentName}
                             onChange={handleResturentName}
+                            required
                             placeholder="Restaurant name"
                             className="w-full mt-1 px-3 py-2 text-sm sm:text-base border rounded-lg 
                             bg-gradient-to-r from-gray-50 to-white 
@@ -103,6 +106,7 @@ const AddReview = () => {
                             name="location"
                             value={location}
                             onChange={handleLocation}
+                            required
                             placeholder="Restaurant location"
                             className="w-full mt-1 px-3 py-2 text-sm sm:text-base border rounded-lg 
                             bg-gradient-to-r from-gray-50 to-white 

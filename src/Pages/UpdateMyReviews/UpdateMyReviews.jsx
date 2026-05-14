@@ -15,7 +15,7 @@ const UpdateMyReviews = () => {
    
     const handleSubmit = (e) => {
         const updateReviewValue = e.target.updateReview.value;
-        console.log(updateReviewValue);
+        // console.log(updateReviewValue);
         e.preventDefault();
         // console.log('id',id);
         instance.patch(`/allReviews/${id}`,{

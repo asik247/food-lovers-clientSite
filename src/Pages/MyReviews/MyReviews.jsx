@@ -1,204 +1,207 @@
 import React, { useEffect, useState } from 'react';
 import useAuth from '../../Hooks/useAuth';
-import { FaStar, FaTrash, FaEdit } from 'react-icons/fa';
-import useSecqure from '../../Hooks/useSecqure';
 import useSecure2 from '../../Hooks/useSecure2';
 import useInstance from '../../Hooks/useInstance';
 import Swal from 'sweetalert2';
 import { Link } from 'react-router';
+import { FaEdit, FaTrash } from 'react-icons/fa';
 
 const MyReviews = () => {
     const { user } = useAuth();
-    const [myr, setMyr] = useState([]);
-    // const instance = useSecqure()
-    const instance2 = useSecure2()
-    const instance = useInstance()
-    // fetch reviews
-    useEffect(() => {
+    const instance2 = useSecure2();
+    const instance = useInstance();
 
+    const [myr, setMyr] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [search, setSearch] = useState('');
+    const [selectedCategory, setSelectedCategory] = useState('All');
+
+    // fetch data
+    useEffect(() => {
         if (user?.email) {
+            setLoading(true);
+
             instance2(`/myReviews?email=${user.email}`)
                 .then(res => {
                     setMyr(res.data);
-
+                    setLoading(false);
                 })
                 .catch(err => {
                     console.log(err);
-
+                    setLoading(false);
                 });
         }
-
     }, [user, instance2]);
 
-    //?Delete Handler;
+    // delete
     const deleteMyReview = (id) => {
         Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this!",
             icon: "warning",
             showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
+            confirmButtonColor: "#6366F1",
+            cancelButtonColor: "#EF4444",
             confirmButtonText: "Yes, delete it!"
         }).then(result => {
             if (result.isConfirmed) {
                 instance.delete(`/allReviews/${id}`)
-                    .then(res => {
-                        const reminie = myr.filter(m => m._id !== id)
-                        setMyr(reminie)
-                        Swal.fire({
-                            title: "Deleted!",
-                            text: "Your review has been deleted.",
-                            icon: "success"
-                        });
-                    }).catch(err => {
-                        console.log(err);
-                        Swal.fire({
-                            title: "Error!",
-                            text: "Something went wrong",
-                            icon: "error"
-                        });
+                    .then(() => {
+                        setMyr(prev => prev.filter(r => r._id !== id));
+
+                        Swal.fire("Deleted!", "Your review has been deleted.", "success");
                     });
             }
-        })
+        });
+    };
 
-    }
+    // filter
+    const filtered = myr.filter(item => {
+        const matchSearch =
+            item.foodName?.toLowerCase().includes(search.toLowerCase());
+
+        const matchCategory =
+            selectedCategory === 'All' ||
+            item.category === selectedCategory;
+
+        return matchSearch && matchCategory;
+    });
+
+    const categories = ['All', ...new Set(myr.map(r => r.category))];
+
+    // skeleton
+    const SkeletonCard = () => (
+        <div className="bg-white rounded-2xl h-80 animate-pulse border" />
+    );
 
     return (
-
         <section className="min-h-screen bg-gray-50 py-10 px-4 sm:px-6 lg:px-10">
 
-            {/* Header */}
-            <div className="max-w-7xl mx-auto mb-4">
+            {/* HEADER */}
+            <div className="max-w-7xl mx-auto mb-8">
+                <div className="flex flex-col sm:flex-row justify-between gap-4">
 
-                <p className="text-sm font-semibold uppercase tracking-widest text-violet-400">
-                    Customer Feedback
-                </p>
+                    <div>
+                        <p className="text-xs font-semibold uppercase text-violet-500">
+                            My Feedback
+                        </p>
 
-                <h1 className="text-4xl md:text-5xl font-bold text-black mt-2">
-                    My Reviews
-                </h1>
-                <p>{myr.length}</p>
+                        <h1 className="text-3xl font-bold text-gray-800">
+                            My Reviews
+                        </h1>
 
+                        <p className="text-sm text-gray-500">
+                            {loading
+                                ? '—'
+                                : `${filtered.length} review${filtered.length !== 1 ? 's' : ''}`}
+                        </p>
+                    </div>
 
+                    {/* search */}
+                    <input
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        placeholder="Search reviews..."
+                        className="w-full sm:w-72 px-4 py-2.5 text-sm border rounded-xl focus:ring-2 focus:ring-violet-400"
+                    />
+                </div>
 
+                {/* categories */}
+                {!loading && categories.length > 1 && (
+                    <div className="flex flex-wrap gap-2 mt-5">
+                        {categories.map(cat => (
+                            <button
+                                key={cat}
+                                onClick={() => setSelectedCategory(cat)}
+                                className={`text-xs px-4 py-1.5 rounded-full border transition ${selectedCategory === cat
+                                        ? 'bg-violet-600 text-white'
+                                        : 'bg-white text-gray-600'
+                                    }`}
+                            >
+                                {cat}
+                            </button>
+                        ))}
+                    </div>
+                )}
             </div>
 
-            {/* Content */}
+            {/* GRID */}
             <div className="max-w-7xl mx-auto">
 
-                {
-                    myr.length === 0 ? (
+                {loading ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+                        {Array.from({ length: 8 }).map((_, i) => (
+                            <SkeletonCard key={i} />
+                        ))}
+                    </div>
+                ) : filtered.length === 0 ? (
+                    <p className="text-center text-gray-400 py-24">
+                        No reviews found
+                    </p>
+                ) : (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
 
-                        <div className="text-center py-24">
+                        {filtered.map(review => (
+                            <div
+                                key={review._id}
+                                className="bg-white rounded-2xl overflow-hidden border hover:shadow-lg transition"
+                            >
 
-                            <h2 className="text-3xl font-bold text-gray-700">
-                                No Reviews Found
-                            </h2>
+                                {/* image */}
+                                <img
+                                    src={review.foodPhoto}
+                                    className="h-48 w-full object-cover"
+                                />
 
-                            <p className="text-gray-400 mt-3">
-                                You haven't added any review yet
-                            </p>
+                                <div className="p-4">
 
-                        </div>
+                                    {/* category */}
+                                    <span className="text-xs bg-violet-100 text-violet-600 px-3 py-1 rounded-full">
+                                        {review.category}
+                                    </span>
 
-                    ) : (
+                                    {/* name */}
+                                    <h2 className="font-bold text-gray-800 mt-2">
+                                        {review.foodName}
+                                    </h2>
 
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                                    {/* review */}
+                                    <p className="text-sm text-gray-500 mt-2 line-clamp-3">
+                                        {review.addReview}
+                                    </p>
 
-                            {
-                                myr.map(review => (
-                                   
-                                    <div
-                                        key={review._id}
-                                        className="bg-[#1E293B] rounded-3xl overflow-hidden border border-slate-700 hover:border-violet-500 shadow-lg hover:shadow-violet-500/20 transition duration-300"
-                                    >
+                                    {/* buttons */}
+                                    <div className="flex gap-2 mt-4">
 
-                                        {/* Image */}
-                                        <div className="overflow-hidden">
+                                        <Link
+                                            to={`/updateMyReviews/${review._id}`}
+                                            state={{ review }}
+                                            className="flex-1 flex items-center justify-center gap-2 bg-violet-500 hover:bg-violet-600 text-white py-2 rounded-lg text-sm"
+                                        >
+                                            <FaEdit />
+                                            Edit
+                                        </Link>
 
-                                            <img
-                                                src={review.foodPhoto}
-                                                alt={review.foodName}
-                                                className="w-full h-56 object-cover hover:scale-105 transition duration-500"
-                                            />
-
-                                        </div>
-
-                                        {/* Body */}
-                                        <div className="p-5">
-
-                                            {/* Category */}
-                                            <span className="inline-block text-xs font-semibold bg-violet-500/20 text-violet-300 px-3 py-1 rounded-full mb-3">
-                                                {review.category}
-                                            </span>
-
-                                            {/* Food Name */}
-                                            <h2 className="text-xl font-bold text-white mb-3">
-                                                {review.foodName}
-                                            </h2>
-
-                                            {/* Review */}
-                                            <div className="bg-[#0F172A] rounded-2xl p-4 mb-5 min-h-[100px] border border-slate-700">
-
-                                                <p className="text-sm text-gray-300 leading-relaxed">
-                                                    "
-                                                    {review.addReview}
-                                                    "
-                                                </p>
-
-                                            </div>
-
-                                            {/* Rating */}
-                                            <div className="flex items-center gap-1 text-yellow-400 mb-5">
-
-                                                <FaStar />
-                                                <FaStar />
-                                                <FaStar />
-                                                <FaStar />
-                                                <FaStar className="text-slate-600" />
-
-                                            </div>
-
-                                            {/* Buttons */}
-                                            <div className="flex gap-3">
-
-                                                {/* Update */}
-                                                <Link to={`/updateMyReviews/${review._id}`}
-                                                state={{review}}
-                                                    className="flex-1 flex items-center justify-center gap-2 bg-slate-800 hover:bg-violet-600 text-white py-2.5 rounded-xl text-sm font-medium transition duration-300 border border-slate-700"
-                                                >
-                                                    <FaEdit />
-                                                    Update
-                                                </Link>
-
-                                                {/* Delete */}
-                                                <button onClick={() => deleteMyReview(review._id)}
-                                                    className="flex-1 flex items-center justify-center gap-2 bg-slate-800 hover:bg-red-600 text-white py-2.5 rounded-xl text-sm font-medium transition duration-300 border border-slate-700"
-                                                >
-                                                    <FaTrash />
-                                                    Delete
-                                                </button>
-
-                                            </div>
-
-                                        </div>
+                                        <button
+                                            onClick={() => deleteMyReview(review._id)}
+                                            className="flex-1 flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg text-sm"
+                                        >
+                                            <FaTrash />
+                                            Delete
+                                        </button>
 
                                     </div>
-                                    
 
-                                ))
-                                
-                            }
+                                </div>
 
-                        </div>
+                            </div>
+                        ))}
 
-                    )
-                }
+                    </div>
+                )}
 
             </div>
         </section>
-
     );
 };
 
