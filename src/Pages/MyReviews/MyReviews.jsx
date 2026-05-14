@@ -4,6 +4,7 @@ import { FaStar, FaTrash, FaEdit } from 'react-icons/fa';
 import useSecqure from '../../Hooks/useSecqure';
 import useSecure2 from '../../Hooks/useSecure2';
 import useInstance from '../../Hooks/useInstance';
+import Swal from 'sweetalert2';
 
 const MyReviews = () => {
     const { user } = useAuth();
@@ -30,14 +31,36 @@ const MyReviews = () => {
 
     //?Delete Handler;
     const deleteMyReview = (id) => {
-        // console.log('deleteMyReview clicked');
-        // console.log(id);
-        instance.delete(`/allReviews/${id}`)
-            .then(res => {
-                console.log('after delete myReviews', res.data);
-            })
-        const reminie = myr.filter(m => m._id !== id)
-        setMyr(reminie)
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then(result => {
+            if (result.isConfirmed) {
+                instance.delete(`/allReviews/${id}`)
+                    .then(res => {
+                        const reminie = myr.filter(m => m._id !== id)
+                        setMyr(reminie)
+                        Swal.fire({
+                            title: "Deleted!",
+                            text: "Your review has been deleted.",
+                            icon: "success"
+                        });
+                    }).catch(err => {
+                        console.log(err);
+                        Swal.fire({
+                            title: "Error!",
+                            text: "Something went wrong",
+                            icon: "error"
+                        });
+                    });
+            }
+        })
+
     }
 
     return (
