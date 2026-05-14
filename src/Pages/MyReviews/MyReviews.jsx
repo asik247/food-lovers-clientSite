@@ -5,6 +5,7 @@ import useSecqure from '../../Hooks/useSecqure';
 import useSecure2 from '../../Hooks/useSecure2';
 import useInstance from '../../Hooks/useInstance';
 import Swal from 'sweetalert2';
+import { Link } from 'react-router';
 
 const MyReviews = () => {
     const { user } = useAuth();
@@ -107,7 +108,7 @@ const MyReviews = () => {
 
                             {
                                 myr.map(review => (
-
+                                   
                                     <div
                                         key={review._id}
                                         className="bg-[#1E293B] rounded-3xl overflow-hidden border border-slate-700 hover:border-violet-500 shadow-lg hover:shadow-violet-500/20 transition duration-300"
@@ -163,12 +164,13 @@ const MyReviews = () => {
                                             <div className="flex gap-3">
 
                                                 {/* Update */}
-                                                <button
+                                                <Link to={`/updateMyReviews/${review._id}`}
+                                                state={{review}}
                                                     className="flex-1 flex items-center justify-center gap-2 bg-slate-800 hover:bg-violet-600 text-white py-2.5 rounded-xl text-sm font-medium transition duration-300 border border-slate-700"
                                                 >
                                                     <FaEdit />
                                                     Update
-                                                </button>
+                                                </Link>
 
                                                 {/* Delete */}
                                                 <button onClick={() => deleteMyReview(review._id)}
@@ -183,8 +185,10 @@ const MyReviews = () => {
                                         </div>
 
                                     </div>
+                                    
 
                                 ))
+                                
                             }
 
                         </div>
