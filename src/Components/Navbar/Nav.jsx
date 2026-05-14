@@ -47,6 +47,18 @@ const Nav = () => {
                    My Reviews
                 </NavLink>
             </li>
+            <li>
+                <NavLink
+                    to="/addReview"
+                    className={({ isActive }) =>
+                        isActive
+                            ? "text-orange-400 font-bold"
+                            : "hover:text-orange-300 duration-300"
+                    }
+                >
+                   Add Reviews
+                </NavLink>
+            </li>
         </>
     );
 
