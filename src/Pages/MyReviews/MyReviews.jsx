@@ -12,7 +12,7 @@ const MyReviews = () => {
     const instance2 = useSecure2();
     const instance = useInstance();
     // Jwt cusom generat toke implement✔️✔️
-    const jwtInstance = useJWTInstance()
+    // const jwtInstance = useJWTInstance()
 
     const [myr, setMyr] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -24,7 +24,7 @@ const MyReviews = () => {
         if (user?.email) {
             setLoading(true);
 
-            jwtInstance(`/myReviews?email=${user.email}`)
+            instance2(`/myReviews?email=${user.email}`)
                 .then(res => {
                     setMyr(res.data);
                     setLoading(false);
@@ -35,7 +35,7 @@ const MyReviews = () => {
                     setLoading(false);
                 });
         }
-    }, [user, jwtInstance]);
+    }, [user, instance2]);
 
     // delete
     const deleteMyReview = (id) => {

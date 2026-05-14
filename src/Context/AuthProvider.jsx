@@ -37,7 +37,7 @@ const AuthProvider = ({ children }) => {
                 const userEmail = {email:currentUser.email}
                 instance.post('/getJWTToken',userEmail)
                 .then(res=>{
-                    console.log('after generate jwt token',res.data.token);
+                    // console.log('after generate jwt token',res.data.token);
                     localStorage.setItem('jwtToken',res.data.token)
                 })
             }

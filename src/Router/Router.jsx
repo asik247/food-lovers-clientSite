@@ -13,11 +13,14 @@ import MyReviews from "../Pages/MyReviews/MyReviews";
 import Details from "../Pages/Details/Details";
 import AllReviews from "../Pages/AllReviews/AllReviews";
 import UpdateMyReviews from "../Pages/UpdateMyReviews/UpdateMyReviews";
+import PageNotFound from "../Pages/PageNotFound/PageNotFound";
+import ErrorPage from "../Pages/ErrorPage/ErrorPage";
 
 const router = createBrowserRouter([
     {
         path: '/',
         Component: Root,
+        errorElement:<ErrorPage></ErrorPage>,
         children: [
             {
                 index: true,
@@ -51,6 +54,10 @@ const router = createBrowserRouter([
             {
                 path:'updateMyReviews/:id',
                 Component:UpdateMyReviews
+            },
+            {
+                path:'*',
+                Component:PageNotFound
             }
 
         ]
