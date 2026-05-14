@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router';
 import useAuth from '../../Hooks/useAuth';
+import { GiHotMeal } from 'react-icons/gi';
 
 const Nav = () => {
 
@@ -114,12 +115,17 @@ const Nav = () => {
                     </div>
 
                     {/* logo */}
-                    <Link
-                        to="/"
-                        className="text-3xl font-extrabold tracking-wide"
-                    >
-                        <span className="text-orange-400">Review</span>Hub
-                    </Link>
+                   <div className="flex items-center gap-3 mb-4">
+
+                        {/* Food Logo */}
+                        <div className="bg-violet-600 p-3 rounded-full text-white text-2xl">
+                            <GiHotMeal />
+                        </div>
+
+                        <h2 className="text-2xl font-bold text-white">
+                            Food Lover
+                        </h2>
+                    </div>
                 </div>
 
                 {/* navbar center */}

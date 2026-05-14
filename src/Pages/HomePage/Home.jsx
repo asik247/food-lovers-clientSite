@@ -177,9 +177,65 @@ const Home = () => {
           border-radius: 4px !important;
         }
       `}</style>
-{/* Show All Btn and navigate AllReviews Pages */}
-      <div className='mt-4 flex justify-center items-center btn btn-ghost'>
-        <Link to={'/allReviews'}>Show All</Link>
+      {/* Show All Button */}
+      <div className="flex justify-center mt-10">
+
+        <Link
+          to="/allReviews"
+          className="
+      group
+      relative
+      inline-flex
+      items-center
+      gap-2
+      overflow-hidden
+      rounded-xl
+      bg-violet-600
+      px-7
+      py-3
+      text-sm
+      font-semibold
+      text-white
+      shadow-lg
+      transition-all
+      duration-300
+      hover:scale-105
+      hover:bg-violet-700
+      hover:shadow-violet-300/40
+    "
+        >
+
+          <span className="relative z-10">
+            Show All Reviews
+          </span>
+
+          <span
+            className="
+        relative
+        z-10
+        transition-transform
+        duration-300
+        group-hover:translate-x-1
+      "
+          >
+            →
+          </span>
+
+          {/* Glow Effect */}
+          <span
+            className="
+        absolute
+        inset-0
+        -z-0
+        bg-white/10
+        opacity-0
+        transition-opacity
+        duration-300
+        group-hover:opacity-100
+      "
+          />
+
+        </Link>
 
       </div>
 
