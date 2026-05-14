@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useLoaderData } from 'react-router';
+import { data, useLoaderData } from 'react-router';
 import useAuth from '../../Hooks/useAuth';
 import useInstance from '../../Hooks/useInstance';
 import Swal from 'sweetalert2';
@@ -54,7 +54,8 @@ const Details = () => {
             foodPhoto: photo,
             foodEmail: user?.email,
             category,
-            addReview: reviewText
+            addReview: reviewText,
+            createdAT:new Date()
         };
 
         instance2.post('/allReviews', newReview)
