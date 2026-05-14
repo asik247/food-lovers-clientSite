@@ -1,17 +1,36 @@
 import React from "react";
 import useForm from "../../Hooks/useForm";
 import useAuth from "../../Hooks/useAuth";
+import useSecure2 from "../../Hooks/useSecure2";
+import Swal from "sweetalert2";
 
 const AddReview = () => {
-    const {user} = useAuth()
-    const [foodName,handleFoodName] = useForm('')
-    const [foodURL,handleFoodURL] = useForm('')
-    const [resturentName,handleResturentName] = useForm('')
-    const [location,handleLocation] = useForm('')
-    const [reviewText,handleReviewText] = useForm('')
-    const submitReviews=(e)=>{
+    const { user } = useAuth()
+    const instance = useSecure2();
+    const [foodName, handleFoodName] = useForm('')
+    const [foodURL, handleFoodURL] = useForm('')
+    const [resturentName, handleResturentName] = useForm('')
+    const [location, handleLocation] = useForm('')
+    const [reviewText, handleReviewText] = useForm('')
+    const submitReviews = (e) => {
         e.preventDefault();
-        console.log('submitReviews btn clicked and here info:',foodName,foodURL,resturentName,location,reviewText);
+        const createData = { foodName, foodURL, resturentName, location, reviewText, userEmail: user?.email, createAT: new Date() }
+        // console.log(createData);
+        instance.post('/creatNewFood', createData)
+            .then(res => {
+                console.log('after create food', res.data);
+                if (res.data.insertedId) {
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: "Your review has been post",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            }).catch(err => {
+                console.log(err);
+            })
     }
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 px-4">
