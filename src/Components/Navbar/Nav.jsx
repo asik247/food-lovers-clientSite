@@ -45,7 +45,7 @@ const Nav = () => {
                             : "hover:text-orange-300 duration-300"
                     }
                 >
-                   My Reviews
+                    My Reviews
                 </NavLink>
             </li>
             <li>
@@ -57,7 +57,7 @@ const Nav = () => {
                             : "hover:text-orange-300 duration-300"
                     }
                 >
-                   Add Reviews
+                    Add Reviews
                 </NavLink>
             </li>
         </>
@@ -115,10 +115,10 @@ const Nav = () => {
                     </div>
 
                     {/* logo */}
-                   <div className="flex items-center gap-3 mb-4">
+                    <div className="flex items-center gap-3 mb-4">
 
                         {/* Food Logo */}
-                        <div className="bg-violet-600 p-3 rounded-full text-white text-2xl">
+                        <div className="p-3 rounded-full text-white text-2xl bg-gradient-to-br from-violet-500 via-purple-600 to-indigo-600 shadow-lg shadow-violet-500/30 ring-2 ring-white/10 hover:scale-105 transition-all duration-300">
                             <GiHotMeal />
                         </div>
 
