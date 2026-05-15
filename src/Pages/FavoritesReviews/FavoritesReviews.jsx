@@ -3,42 +3,63 @@ import useInstance from '../../Hooks/useInstance';
 import useAuth from '../../Hooks/useAuth';
 
 const FavoritesReviews = () => {
-    const instance = useInstance()
-    const { user } = useAuth()
-    const [favReviews, setFavReviews] = useState([])
+
+    const instance = useInstance();
+    const { user } = useAuth();
+
+    const [favReviews, setFavReviews] = useState([]);
     const [loading2, setLoading2] = useState(true);
+
     useEffect(() => {
+
+        if (!user?.email) return;
+
         instance(`/favoritesReviewsColl?email=${user.email}`)
             .then(res => {
-                console.log('all favorites reviews hre', res.data);
-                setFavReviews(res.data)
-                setLoading2(false)
-            }).catch(eror => {
-                console.log(eror);
+                console.log(res.data);
+                setFavReviews(res.data);
             })
-    }, [user, instance])
-    return (
-        <div>
-            {
-                loading2 ? (<p>loading...</p>) : (
-                    favReviews.map(singleFavReview => <div key={singleFavReview._id}>
-                        <p>{singleFavReview.foodName}</p>
-                    </div>)
-                )
-            }
+            .catch(error => {
+                console.log(error);
+            })
+            .finally(() => {
+                setLoading2(false);
+            });
 
+    }, [user, instance]);
+
+    if (loading2) {
+        return <p>loading...</p>;
+    }
+
+    return (
+        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5'>
+            {
+                favReviews.map(singleFavReview => (
+                    <div
+                        key={singleFavReview._id}
+                        className='border p-4 rounded-xl shadow'
+                    >
+
+                        <img
+                            src={singleFavReview.foodImage}
+                            alt=""
+                            className='w-40 rounded-lg'
+                        />
+
+                        <h2 className='text-2xl font-bold'>
+                            {singleFavReview.foodName}
+                        </h2>
+
+                        <p>{singleFavReview.category}</p>
+
+                        <p>{singleFavReview.addReview}</p>
+
+                    </div>
+                ))
+            }
         </div>
     );
 };
 
 export default FavoritesReviews;
-/** {
-    "_id": "6a06a409122b0e97d07c4f0c",
-    "userEmail": "mdasikur5893@gmail.com",
-    "foodId": "69ff7d49cae9500796bac7ce",
-    "foodName": "Peking Duck",
-    "foodImage": "https://images.unsplash.com/photo-1600335895229-6e75511892c8?w=400",
-    "category": "Chinese",
-    "addReview": "most femouse vegatable",
-    "addedAt": "2026-05-15T04:41:45.261Z"
-  }, */
