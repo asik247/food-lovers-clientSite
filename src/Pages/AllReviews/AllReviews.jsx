@@ -73,7 +73,7 @@ const ReviewCard = ({ review, index }) => {
         instance.post('/favoritesReviewsColl', favoriteData)
             .then(res => {
 
-                console.log(res.data);
+                // console.log(res.data);
 
                 if (res.data.insertedId) {
                     alert('Added To Favorites');
