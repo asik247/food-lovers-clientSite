@@ -195,6 +195,14 @@ const Nav = () => {
                                                         ⭐ My Reviews
                                                     </NavLink>
                                                 </li>
+                                                <li>
+                                                    <NavLink
+                                                        to="/favoritesReview"
+                                                        className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-orange-400 hover:text-black duration-300"
+                                                    >
+                                                        ❤️ Favorite Reviews
+                                                    </NavLink>
+                                                </li>
 
                                                 <li>
                                                     <button
