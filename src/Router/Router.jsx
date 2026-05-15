@@ -15,6 +15,7 @@ import AllReviews from "../Pages/AllReviews/AllReviews";
 import UpdateMyReviews from "../Pages/UpdateMyReviews/UpdateMyReviews";
 import PageNotFound from "../Pages/PageNotFound/PageNotFound";
 import ErrorPage from "../Pages/ErrorPage/ErrorPage";
+import FavoritesReviews from "../Pages/FavoritesReviews/FavoritesReviews";
 
 const router = createBrowserRouter([
     {
@@ -54,6 +55,10 @@ const router = createBrowserRouter([
             {
                 path:'updateMyReviews/:id',
                 Component:UpdateMyReviews
+            },
+            {
+                path:'favoritesReviews/:id',
+                element:<PrivateRoutes><FavoritesReviews></FavoritesReviews></PrivateRoutes>
             },
             {
                 path:'*',

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import useInstance from '../../Hooks/useInstance';
+import { Link } from 'react-router';
 /* -------------------- CONSTANTS -------------------- */
 const CATEGORY_COLORS = {
     Dessert: 'bg-pink-100 text-pink-700',
@@ -99,7 +100,7 @@ const ReviewCard = ({ review, index }) => {
                   
                 )}
                 <div>
-                    <button className='btn btn-ghost'>Favorites Btn</button>
+                    <Link to={`/favoritesReviews/${review._id}`} state={{review}} className='btn btn-ghost'>Favorites Btn</Link>
                 </div>
             </div>
         </div>
