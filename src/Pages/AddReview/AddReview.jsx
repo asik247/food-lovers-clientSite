@@ -153,10 +153,7 @@ const AddReview = () => {
                     {/* Button */}
                     <button
                         type="submit"
-                        className="w-full py-2 rounded-lg text-white font-semibold 
-                        bg-gradient-to-r from-blue-500 to-indigo-600 
-                        hover:from-blue-600 hover:to-indigo-700 
-                        transition duration-200"
+                         className=" w-full text-center py-2.5 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-[#1e293b] via-[#312e81] to-[#4c1d95] hover:opacity-90 hover:shadow-[0_0_20px_rgba(99,102,241,0.35)] transition-all duration-300 "
                     >
                         Submit Review
                     </button>

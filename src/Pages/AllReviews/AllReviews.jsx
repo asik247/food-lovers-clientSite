@@ -96,7 +96,11 @@ const ReviewCard = ({ review, index }) => {
                             "{review.addReview}"
                         </p>
                     </div>
+                  
                 )}
+                <div>
+                    <button className='btn btn-ghost'>Favorites Btn</button>
+                </div>
             </div>
         </div>
     );

@@ -110,7 +110,7 @@ const Home = () => {
       {/* ================= PRODUCTS ================= */}
       <div className="max-w-7xl mx-auto px-4 py-12">
 
-        <h2 className="text-2xl md:text-3xl font-extrabold text-center mb-10">
+        <h2 className="text-2xl md:text-3xl font-extrabold text-center text-orange-500 mb-10">
           Latest Products
         </h2>
 
@@ -190,7 +190,7 @@ const Home = () => {
       gap-2
       overflow-hidden
       rounded-xl
-      bg-violet-600
+      bg-violet-900
       px-7
       py-3
       text-sm
@@ -200,13 +200,13 @@ const Home = () => {
       transition-all
       duration-300
       hover:scale-105
-      hover:bg-violet-700
+      hover:bg-violet-800
       hover:shadow-violet-300/40
     "
         >
 
           <span className="relative z-10">
-            Show All Reviews2
+            Show All Reviews
           </span>
 
           <span
