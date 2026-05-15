@@ -57,7 +57,7 @@ const router = createBrowserRouter([
                 Component:UpdateMyReviews
             },
             {
-                path:'favoritesReviews/:id',
+                path:'favoritesReview/:id',
                 element:<PrivateRoutes><FavoritesReviews></FavoritesReviews></PrivateRoutes>
             },
             {

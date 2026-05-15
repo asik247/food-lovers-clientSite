@@ -100,7 +100,7 @@ const ReviewCard = ({ review, index }) => {
                   
                 )}
                 <div>
-                    <Link to={`/favoritesReviews/${review._id}`} state={{review}} className='btn btn-ghost'>Favorites Btn</Link>
+                    <Link to={`/favoritesReview/${review._id}`} state={{review}} className='btn btn-ghost'>Favorites Btn</Link>
                 </div>
             </div>
         </div>
