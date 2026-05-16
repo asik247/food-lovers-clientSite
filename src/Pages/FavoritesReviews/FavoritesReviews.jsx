@@ -41,10 +41,10 @@ const FavoritesReviews = () => {
                         className='border p-4 rounded-xl shadow'
                     >
 
-                        <img
+                        <img 
                             src={singleFavReview.foodImage}
                             alt=""
-                            className='w-40 rounded-lg'
+                            className=' w-full h-[250px] object-cover rounded-lg'
                         />
 
                         <h2 className='text-2xl font-bold'>
